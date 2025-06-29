@@ -412,7 +412,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 2. Applica modifiche UI/gameplay/audio
 3. Aggiorna preferenze salvate
 4. Ricarica componenti
-5. Conferma all’utente
+5. Conferma all'utente
 
 **Dataset coinvolti**:
 
@@ -567,7 +567,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 2. Ordina per priorità
 3. Applica formattazione dinamica
 4. Marca notizie come lette
-5. Aggiorna badge “nuove notizie”
+5. Aggiorna badge "nuove notizie"
 
 **Dataset coinvolti**:
 
@@ -578,31 +578,122 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 
 ---
 
+### 22. **Document_Upload**
+
+**Trigger**: Upload documento atleta da interfaccia CRM
+**Input richiesto**:
+
+* `athlete_id` (String)
+* `file` (File object)
+* `type` (Enum: cartellino, visita_medica, nulla_osta, certificato_medico, assicurazione)
+* `expires_at` (DateTime, opzionale)
+
+**Logica step-by-step**:
+
+1. Controllo ACL - Solo DIRIGENTE+ può caricare documenti
+2. Validazione input (athlete_id, file, type obbligatori)
+3. Validazione tipo documento (formati supportati)
+4. Validazione formato file (pdf, png, jpg, jpeg)
+5. Validazione dimensione file (max 10MB)
+6. Upload file su storage (Bolt Storage/S3)
+7. Salva record documento nel dataset
+8. Log operazione per audit
+
+**Dataset coinvolti**:
+
+* `documents`, `athletes`
+
+**Output**: Documento caricato con successo, URL file generato
+**Moduli associati**: CRM Atleti, Gestione Documenti
+**Role Required**: DIRIGENTE
+
+---
+
+### 23. **Athlete_AddNote**
+
+**Trigger**: Aggiunta nota tecnica da parte dell'allenatore
+**Input richiesto**:
+
+* `athlete_id` (String)
+* `note_text` (String, max 2000 caratteri)
+* `visibility` (Enum: private, team, staff)
+* `tags` (Array: tattica, fisica, mentale, disciplinare)
+
+**Logica step-by-step**:
+
+1. Controllo ACL - Solo ALLENATORE può aggiungere note tecniche
+2. Validazione input (athlete_id e note_text obbligatori)
+3. Verifica che l'atleta esista e appartenga al club
+4. Validazione lunghezza nota (max 2000 caratteri)
+5. Controllo team specifico per ALLENATORE (solo propri atleti)
+6. Inserimento nota tecnica nel dataset
+7. Log operazione per audit
+
+**Dataset coinvolti**:
+
+* `athlete_notes`, `athletes`
+
+**Output**: Nota tecnica aggiunta con successo
+**Moduli associati**: CRM Atleti, Note Tecniche
+**Role Required**: ALLENATORE
+
+---
+
+### 24. **Lineup_Submit**
+
+**Trigger**: Invio formazione partita da parte dell'allenatore
+**Input richiesto**:
+
+* `match_id` (String)
+* `players` (Array di oggetti con athlete_id e position)
+
+**Logica step-by-step**:
+
+1. Controllo ACL - Solo ALLENATORE per propria squadra
+2. Validazione completa (11 titolari + max 7 riserve)
+3. Controllo disponibilità giocatori (sani e tesserati)
+4. Salvataggio CRM (dataset lineups e lineup_players)
+5. Sync API - POST a Game Engine con retry su errore
+6. Logging audit - Tracciamento completo operazioni
+
+**Dataset coinvolti**:
+
+* `lineups`, `lineup_players`, `matches`
+
+**Output**: Formazione inviata e sincronizzata con Game Engine
+**Moduli associati**: CRM Formazioni, Game Engine Sync
+**Role Required**: ALLENATORE
+
+---
+
 ## 📊 Tabella Riepilogativa Flow
 
-| Flow                          | Modulo                | Trigger                              | Dataset Usati                                                                             | Output Principale                      |
-| ----------------------------- | --------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------- |
-| GameFlow\_StartNewGame        | Session Manager       | Click "Nuova Partita"                | `teams`, `players`, `staff`, `matches`, `user_sessions`, `tactics`, `morale_status`       | Nuova partita inizializzata            |
-| GameFlow\_AdvanceDay          | Calendar Advance      | Click "Avanza Giorno"                | `user_sessions`, `players`, `trainings`, `morale_status`, `game_events`, `transfers`      | Gioco avanzato di 1+ giorni            |
-| Match\_Simulate               | Partite               | Click "Gioca Partita"                | `matches`, `players`, `tactics`, `teams`, `match_reports`, `morale_status`, `game_events` | Partita simulata e completata          |
-| Match\_GenerateReport         | Report Partita        | Auto post-partita                    | `match_reports`, `matches`, `players`                                                     | Report dettagliato generato            |
-| Player\_Train                 | Allenamento           | Esecuzione allenamento               | `trainings`, `players`, `staff`, `attributes_history`, `morale_status`, `game_events`     | Giocatori allenati                     |
-| Tactics\_Update               | Tattiche              | Salvataggio tattica                  | `tactics`, `players`, `teams`                                                             | Tattica salvata e validata             |
-| Transfer\_Offer               | Trasferimenti         | Invio offerta                        | `transfers`, `players`, `teams`, `game_events`                                            | Trattativa avviata                     |
-| Transfer\_Process             | Trasferimenti         | Decisione trattativa                 | `transfers`, `players`, `teams`, `morale_status`, `game_events`                           | Trasferimento completato/fallito       |
-| Session\_Save                 | Session Manager       | Salvataggio manuale/auto             | `user_sessions`, tutti i dataset                                                          | Partita salvata                        |
-| Session\_Load                 | Session Manager       | Caricamento partita                  | `user_sessions`, tutti i dataset                                                          | Partita caricata                       |
-| Staff\_AssignRole             | Staff                 | Assegnazione ruolo                   | `staff`, `teams`, `morale_status`, `game_events`                                          | Staff riassegnato                      |
-| Morale\_Update                | Trasversale           | Eventi significativi                 | `morale_status`, `players`, `teams`, `game_events`                                        | Morale aggiornato                      |
-| Report\_CompileHistory        | Storico Giocatori     | Richiesta storico                    | `attributes_history`, `matches`, `players`                                                | Report storico compilato               |
-| Calendar\_FetchUpcomingEvents | Calendar Advance      | Apertura calendario                  | `matches`, `trainings`, `transfers`, `game_events`                                        | Eventi futuri elencati                 |
-| UserSettings\_Apply           | Impostazioni Utente   | Salvataggio impostazioni             | `user_settings`                                                                           | Impostazioni applicate                 |
-| Finance\_Update               | Finanze               | Evento economico                     | `finances`, `teams`, `game_events`                                                        | Budget aggiornato, transazione loggata |
-| Board\_Evaluate               | Direzione             | Fine partita / richiesta / fine mese | `board_feedback`, `matches`, `finances`, `transfers`, `game_events`, `press_releases`     | Stato board aggiornato                 |
-| Scouting\_Discover            | Scout, Shortlist      | Avvio scouting / avanzamento giorno  | `discovery_level`, `attribute_masking`, `scouting_accuracy`, `shortlist`, `game_events`   | Assignments con attributi rivelati     |
-| Scouting\_Update              | Scout, Shortlist      | Avanzamento scouting                 | `discovery_level`, `attribute_masking`, `scouting_accuracy`, `shortlist`, `game_events`   | Progresso osservazione aggiornato      |
-| Discovery\_Complete           | Scout, Match Analysis | Completamento osservazione           | `discovery_level`, `attribute_masking`, `game_events`, `press_releases`                   | Giocatore scoperto                     |
-| Press\_Center\_Display        | Notizie, Eventi       | Apertura Press Center                | `press_releases`, `game_events`                                                           | Lista notizie formattata               |
+| Flow                          | Modulo                | Trigger                              | Dataset Usati                                                                             | Output Principale                      | Role Required |
+| ----------------------------- | --------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------- | ------------- |
+| GameFlow\_StartNewGame        | Session Manager       | Click "Nuova Partita"                | `teams`, `players`, `staff`, `matches`, `user_sessions`, `tactics`, `morale_status`       | Nuova partita inizializzata            | -             |
+| GameFlow\_AdvanceDay          | Calendar Advance      | Click "Avanza Giorno"                | `user_sessions`, `players`, `trainings`, `morale_status`, `game_events`, `transfers`      | Gioco avanzato di 1+ giorni            | -             |
+| Match\_Simulate               | Partite               | Click "Gioca Partita"                | `matches`, `players`, `tactics`, `teams`, `match_reports`, `morale_status`, `game_events` | Partita simulata e completata          | -             |
+| Match\_GenerateReport         | Report Partita        | Auto post-partita                    | `match_reports`, `matches`, `players`                                                     | Report dettagliato generato            | -             |
+| Player\_Train                 | Allenamento           | Esecuzione allenamento               | `trainings`, `players`, `staff`, `attributes_history`, `morale_status`, `game_events`     | Giocatori allenati                     | -             |
+| Tactics\_Update               | Tattiche              | Salvataggio tattica                  | `tactics`, `players`, `teams`                                                             | Tattica salvata e validata             | -             |
+| Transfer\_Offer               | Trasferimenti         | Invio offerta                        | `transfers`, `players`, `teams`, `game_events`                                            | Trattativa avviata                     | -             |
+| Transfer\_Process             | Trasferimenti         | Decisione trattativa                 | `transfers`, `players`, `teams`, `morale_status`, `game_events`                           | Trasferimento completato/fallito       | -             |
+| Session\_Save                 | Session Manager       | Salvataggio manuale/auto             | `user_sessions`, tutti i dataset                                                          | Partita salvata                        | -             |
+| Session\_Load                 | Session Manager       | Caricamento partita                  | `user_sessions`, tutti i dataset                                                          | Partita caricata                       | -             |
+| Staff\_AssignRole             | Staff                 | Assegnazione ruolo                   | `staff`, `teams`, `morale_status`, `game_events`                                          | Staff riassegnato                      | DS            |
+| Morale\_Update                | Trasversale           | Eventi significativi                 | `morale_status`, `players`, `teams`, `game_events`                                        | Morale aggiornato                      | -             |
+| Report\_CompileHistory        | Storico Giocatori     | Richiesta storico                    | `attributes_history`, `matches`, `players`                                                | Report storico compilato               | -             |
+| Calendar\_FetchUpcomingEvents | Calendar Advance      | Apertura calendario                  | `matches`, `trainings`, `transfers`, `game_events`                                        | Eventi futuri elencati                 | -             |
+| UserSettings\_Apply           | Impostazioni Utente   | Salvataggio impostazioni             | `user_settings`                                                                           | Impostazioni applicate                 | -             |
+| Finance\_Update               | Finanze               | Evento economico                     | `finances`, `teams`, `game_events`                                                        | Budget aggiornato, transazione loggata | -             |
+| Board\_Evaluate               | Direzione             | Fine partita / richiesta / fine mese | `board_feedback`, `matches`, `finances`, `transfers`, `game_events`, `press_releases`     | Stato board aggiornato                 | -             |
+| Scouting\_Discover            | Scout, Shortlist      | Avvio scouting / avanzamento giorno  | `discovery_level`, `attribute_masking`, `scouting_accuracy`, `shortlist`, `game_events`   | Assignments con attributi rivelati     | -             |
+| Scouting\_Update              | Scout, Shortlist      | Avanzamento scouting                 | `discovery_level`, `attribute_masking`, `scouting_accuracy`, `shortlist`, `game_events`   | Progresso osservazione aggiornato      | -             |
+| Discovery\_Complete           | Scout, Match Analysis | Completamento osservazione           | `discovery_level`, `attribute_masking`, `game_events`, `press_releases`                   | Giocatore scoperto                     | -             |
+| Press\_Center\_Display        | Notizie, Eventi       | Apertura Press Center                | `press_releases`, `game_events`                                                           | Lista notizie formattata               | -             |
+| Document\_Upload              | CRM Atleti            | Upload documento atleta              | `documents`, `athletes`                                                                   | Documento caricato con successo        | DIRIGENTE     |
+| Athlete\_AddNote              | CRM Atleti            | Aggiunta nota tecnica                | `athlete_notes`, `athletes`                                                               | Nota tecnica aggiunta                  | ALLENATORE    |
+| Lineup\_Submit                | CRM Formazioni        | Invio formazione partita             | `lineups`, `lineup_players`, `matches`                                                   | Formazione sincronizzata con Game      | ALLENATORE    |
 
 ---
 
@@ -624,6 +715,12 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 * `Discovery_Complete` → completa scoperta scavenger
 * `Press_Center_Display` → dipende da `press_releases`, `game_events`
 
+### Flow CRM
+
+* `Document_Upload` → gestisce upload documenti atleti con validazioni complete
+* `Athlete_AddNote` → sistema note tecniche per allenatori
+* `Lineup_Submit` → sincronizzazione formazioni CRM ↔ Game Engine
+
 ### Flow Indipendenti
 
 * `UserSettings_Apply`
@@ -641,9 +738,10 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 3. **Fase 3**: `Player_Train`, `Tactics_Update`, `Morale_Update`, `Finance_Update`, `UserSettings_Apply`
 4. **Fase 4**: `Transfer_Offer`, `Transfer_Process`, `Board_Evaluate`, `Scouting_Discover`, `Staff_AssignRole`
 5. **Fase 5**: `Discovery_Complete`, `Press_Center_Display`, `Calendar_FetchUpcomingEvents`, `Report_CompileHistory`
+6. **Fase 6**: `Document_Upload`, `Athlete_AddNote`, `Lineup_Submit` (CRM Integration)
 
 ---
 
 *Documentazione aggiornata al: Giugno 2025*
-*Versione flow: 1.1*
+*Versione flow: 1.2*
 *Compatibilità Bolt.new: Tutte le versioni*

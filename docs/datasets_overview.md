@@ -341,6 +341,22 @@ I dataset sono progettati per essere:
 
 ---
 
+### 21. **athlete_notes** - Note Tecniche Atleti  
+**Scopo**: Sistema di annotazioni tecniche per allenatori e staff  
+**Relazioni**:
+- `athlete_id` → `players.id`
+- `coach_id` → `users.id`
+
+**Campi chiave**:
+- Testo nota tecnica (performance, comportamento, sviluppo)
+- Data creazione e ultima modifica
+- Visibilità (privata allenatore, condivisa staff, pubblica)
+- Tag categorizzazione (tattica, fisica, mentale, disciplinare)
+
+**Utilizzo nei Flow**: `Athlete_AddNote`, `Training_Process`, `Performance_Review`
+
+---
+
 ## 🔄 Flussi di Popolazione Dati
 
 ### Inizializzazione Gioco
@@ -364,7 +380,7 @@ I dataset sono progettati per essere:
 - **attribute_masking**: Ridotto con osservazione o prestazioni
 - **shortlist**: Modificato tramite interfaccia scouting
 - **press_releases**: Generato in automatico dopo eventi rilevanti
-
+- **athlete_notes**: Creato da allenatori durante osservazioni e allenamenti
 
 ### Salvataggio/Caricamento
 - **user_sessions**: Aggiornato ad ogni salvataggio automatico/manuale
@@ -439,6 +455,7 @@ const recentTransfers = await bolt.data.transfers.filter({
 - [x] `attribute_masking`
 - [x] `discovery_level`
 - [x] `press_releases`
+- [x] `athlete_notes`
 
 ### Versione 1.2 (prossima)
 - [ ] `youth_academy` - Settore giovanile
@@ -451,7 +468,6 @@ const recentTransfers = await bolt.data.transfers.filter({
 - [ ] `multiplayer_sessions` - Modalità multiplayer
 - [ ] `custom_leagues` - Campionati personalizzati
 - [ ] `mod_support` - Supporto modifiche utente
-
 
 ---
 

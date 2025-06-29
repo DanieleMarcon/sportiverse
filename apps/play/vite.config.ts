@@ -4,6 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  publicDir: 'public',
   server: {
     port: 3000,
     host: true
@@ -15,7 +16,8 @@ export default defineConfig({
     alias: {
       '@ui': path.resolve(__dirname, '../../packages/ui/src'),
       '@game': path.resolve(__dirname, '../../packages/allenatore-nato/src'),
-      '@common': path.resolve(__dirname, '../../packages/common/src')
+      '@common': path.resolve(__dirname, '../../packages/common/src'),
+      '@': path.resolve(__dirname, './src')
     }
   },
   css: {

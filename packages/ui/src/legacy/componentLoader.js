@@ -1,6 +1,10 @@
 // Auto-load and initialize components based on DOM elements
 // Scans bolt_src/components for modules and instantiates them for matching selectors
 
+// TODO: LEGACY FILE - Remove when migrating to React components
+// This file provides backward compatibility for HTML-based components
+// All new components should be created as React components
+
 // When served without a bundler (e.g. opening index.html directly) `import.meta.glob`
 // is undefined. Fallback to an empty map so the script doesn't throw errors.
 const componentModules = typeof import.meta.glob === 'function'
@@ -15,6 +19,8 @@ function toSelector(name) {
 }
 
 export async function initializeComponents(root = document) {
+  console.warn('🚧 Using legacy componentLoader - migrate to React components');
+  
   for (const [path, loader] of Object.entries(componentModules)) {
     const module = await loader();
     const Component = module.default;

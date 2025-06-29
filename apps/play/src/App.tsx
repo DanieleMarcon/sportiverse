@@ -1,37 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, { useState } from 'react'
+import { GameLayout } from './components/GameLayout'
+import { Dashboard } from './pages/Dashboard'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState('dashboard')
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <Dashboard />
+      default:
+        return (
+          <div className="page-placeholder">
+            <h2>🚧 Pagina in sviluppo</h2>
+            <p>La pagina "{currentPage}" sarà disponibile nelle prossime versioni.</p>
+            <button 
+              className="button button-primary"
+              onClick={() => setCurrentPage('dashboard')}
+            >
+              Torna alla Dashboard
+            </button>
+          </div>
+        )
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>⚽ Allenatore Nato</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <div className="legacy-notice">
-        <p>🚧 Legacy components will be migrated to React soon</p>
-      </div>
-    </>
+    <GameLayout>
+      {renderPage()}
+    </GameLayout>
   )
 }
 

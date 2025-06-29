@@ -1,0 +1,17 @@
+{
+  "name": "@sportiverse/remi",
+  "version": "1.0.0",
+  "description": "Assistente AI per analisi e automazione",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

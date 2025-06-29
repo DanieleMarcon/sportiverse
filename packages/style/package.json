@@ -1,0 +1,10 @@
+{
+  "name": "@sportiverse/style",
+  "version": "1.0.0",
+  "description": "CSS globale e design tokens",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Building styles...'",
+    "clean": "rm -rf dist node_modules"
+  }
+}

@@ -1,82 +1,101 @@
-# 🗑️ .gitignore — Sportiverse
-# Basato sul template Node + Bolt.new + tooling specifico del progetto
-
-###############################
-# Generale / Sistema operativo
-###############################
-.DS_Store
-Thumbs.db
-*.swp
-
-###############################
-# Editor / IDE
-###############################
-.idea/
-.vscode/
-*.code-workspace
-
-###############################
-# Gestione pacchetti / Node
-###############################
+# Dependencies
 node_modules/
-# PNPM store locale
 .pnpm-store/
 
-###############################
-# Log & temp
-###############################
-*.log
-npm-debug.log*
-yarn-debug.log*
-pnpm-debug.log*
-logs/
-
-###############################
-# Build output
-###############################
+# Build outputs
 dist/
 build/
 .vite/
-*.tsbuildinfo
+.next/
+.nuxt/
 
-###############################
-# Test & Coverage
-###############################
-coverage/
-.nyc_output/
-playwright-report/
-*.snap
-
-###############################
-# Ambiente / credenziali
-###############################
+# Environment variables
 .env
-.env.*.local
-!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-###############################
-# Bolt.new files
-###############################
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Temporary folders
+tmp/
+temp/
+
+# Bolt.new specific
 .bolt/
-# ramo di anteprima leggero (generato da CI)
 bolt-preview/
 
-###############################
-# Deploy & Hosting
-###############################
-.netlify/
-siteground/
-
-###############################
-# Assets voluminosi (gestiti via CDN o Storage)
-###############################
+# Sportiverse specific
 replays/
-datasets/raw/
 exports/
-
-###############################
-# Misc
-###############################
-.tmp/
-.temp/
-
+*.backup
+.secrets/

@@ -1,5 +1,9 @@
 # ⚽ Allenatore Nato – Demo
 
+[![npm version](https://img.shields.io/npm/v/@sportiverse/allenatore-nato?style=flat-square)](https://www.npmjs.com/package/@sportiverse/allenatore-nato)
+[![Documentation](https://img.shields.io/badge/docs-HTML-blue?style=flat-square)](https://sportiverse.github.io/allenatore-nato/)
+[![License](https://img.shields.io/badge/license-PROPRIETARY-red?style=flat-square)](./LICENSE)
+
 Web app manageriale calcistica realizzata interamente con **Bolt.new**, pensata per offrire un'esperienza moderna, scalabile e totalmente no-code.
 
 ---
@@ -84,6 +88,136 @@ deploy/
 - 🔹 **Netlify**: deploy CI/CD con anteprime automatiche
 
 ✅ Il contenuto della cartella `dist/` è completo e autonomo.
+
+---
+
+## 📚 API Pubblica
+
+### Core Game Functions
+
+```typescript
+// Gestione Partite
+startMatch(homeTeam: Team, awayTeam: Team, tactics: Tactics): Promise<MatchResult>
+simulateMatch(matchId: string, speed: MatchSpeed): Promise<MatchEvent[]>
+pauseMatch(matchId: string): Promise<void>
+getMatchStats(matchId: string): Promise<MatchStatistics>
+
+// Avanzamento Gioco
+advanceDay(days?: number): Promise<DayAdvanceResult>
+advanceWeek(): Promise<WeekAdvanceResult>
+getCurrentGameState(): Promise<GameState>
+
+// Gestione Squadra
+getTeamPlayers(teamId: string, filters?: PlayerFilters): Promise<Player[]>
+updatePlayerPosition(playerId: string, position: PlayerPosition): Promise<void>
+setTeamTactics(teamId: string, tactics: Tactics): Promise<void>
+getTeamMorale(teamId: string): Promise<MoraleStatus>
+
+// Allenamenti
+createTrainingSession(config: TrainingConfig): Promise<Training>
+processTraining(trainingId: string): Promise<TrainingResult>
+getPlayerDevelopment(playerId: string): Promise<PlayerDevelopment>
+
+// Trasferimenti
+makeTransferOffer(playerId: string, offer: TransferOffer): Promise<NegotiationResult>
+acceptTransfer(transferId: string): Promise<boolean>
+rejectTransfer(transferId: string, reason?: string): Promise<void>
+getMarketValue(playerId: string): Promise<number>
+
+// Scouting
+startScouting(playerIds: string[], scoutId: string): Promise<ScoutingAssignment[]>
+getScoutingReport(playerId: string): Promise<ScoutingReport>
+addToShortlist(playerId: string, priority: Priority): Promise<void>
+revealPlayerAttributes(playerId: string, level: RevealLevel): Promise<PlayerAttributes>
+
+// Salvataggi
+saveGame(sessionName?: string): Promise<SaveResult>
+loadGame(sessionId: string): Promise<LoadResult>
+listSavedGames(): Promise<SavedSession[]>
+deleteGame(sessionId: string): Promise<void>
+
+// Statistiche
+getPlayerStats(playerId: string, period?: TimePeriod): Promise<PlayerStatistics>
+getTeamStats(teamId: string, period?: TimePeriod): Promise<TeamStatistics>
+getLeagueTable(): Promise<LeagueStanding[]>
+getTopScorers(limit?: number): Promise<PlayerRanking[]>
+```
+
+### Utility Functions
+
+```typescript
+// Calcoli
+calculatePlayerRating(player: Player, position: string): number
+calculateTeamChemistry(players: Player[], tactics: Tactics): number
+calculateInjuryRisk(player: Player, intensity: number): number
+calculateTransferValue(player: Player, market: MarketConditions): number
+
+// Validazioni
+validateFormation(formation: Formation, players: Player[]): ValidationResult
+validateTransferBudget(team: Team, amount: number): boolean
+validateContractTerms(contract: Contract): ValidationResult
+
+// Generatori
+generateRandomEvent(context: GameContext): GameEvent
+generateAIDecision(team: Team, situation: GameSituation): AIDecision
+generateMatchCommentary(event: MatchEvent): string
+generatePlayerName(nationality: string): PlayerName
+```
+
+---
+
+## 🗓️ Roadmap di Sviluppo
+
+| Sprint | Durata | Obiettivi | Deliverable | Status |
+|--------|--------|-----------|-------------|---------|
+| **Sprint 1** | 2 settimane | **Setup & Core** | Base funzionante | ✅ **Completato** |
+| | | • Setup monorepo e Bolt workspace | | |
+| | | • Creazione dataset principali (teams, players, matches) | | |
+| | | • Flow base (StartNewGame, AdvanceDay) | | |
+| | | • Dashboard e navigazione | | |
+| | | • Sistema salvataggio/caricamento | | |
+| **Sprint 2** | 3 settimane | **Match Engine** | Simulazione partite | 🚧 **In Corso** |
+| | | • Motore simulazione partite completo | | |
+| | | • Sistema tattiche e formazioni | | |
+| | | • Eventi live e statistiche | | |
+| | | • Report post-partita | | |
+| | | • Integrazione morale e fitness | | |
+| **Sprint 3** | 3 settimane | **Gestione Squadra** | Management completo | 📋 **Pianificato** |
+| | | • Sistema allenamenti avanzato | | |
+| | | • Sviluppo attributi giocatori | | |
+| | | • Gestione infortuni e recuperi | | |
+| | | • Staff tecnico e competenze | | |
+| | | • Calendario eventi automatici | | |
+| **Sprint 4** | 4 settimane | **Mercato & Scouting** | Sistema trasferimenti | 📋 **Pianificato** |
+| | | • Mercato trasferimenti completo | | |
+| | | • Sistema scouting con mascheramento | | |
+| | | • Negoziazioni automatiche IA | | |
+| | | • Contratti e clausole | | |
+| | | • Shortlist e report scout | | |
+| **Sprint 5** | 2 settimane | **Polish & Deploy** | Versione finale | 📋 **Pianificato** |
+| | | • Ottimizzazioni performance | | |
+| | | • UI/UX refinement | | |
+| | | • Testing completo | | |
+| | | • Documentazione finale | | |
+| | | • Deploy produzione | | |
+
+### 🎯 Milestone Chiave
+
+- **M1** (Fine Sprint 1): ✅ **Demo giocabile base**
+- **M2** (Fine Sprint 2): 🚧 **Partite simulate complete**
+- **M3** (Fine Sprint 3): 📋 **Gestione squadra avanzata**
+- **M4** (Fine Sprint 4): 📋 **Mercato e scouting funzionali**
+- **M5** (Fine Sprint 5): 📋 **Versione 1.0 production-ready**
+
+### 📊 Metriche di Successo
+
+| Metrica | Target Sprint 5 | Attuale |
+|---------|-----------------|---------|
+| **Funzionalità Core** | 100% | 25% |
+| **Coverage Test** | ≥ 90% | 15% |
+| **Performance** | < 2s load time | ~3s |
+| **Mobile Responsive** | 100% | 80% |
+| **Accessibilità** | WCAG AA | Parziale |
 
 ---
 

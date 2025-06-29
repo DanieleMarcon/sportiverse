@@ -1,0 +1,16 @@
+{
+  "name": "@sportiverse/integrations-service",
+  "version": "1.0.0",
+  "description": "Adapters per CRM esterni",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "build": "echo 'Building integrations service...'",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*",
+    "@sportiverse/sport-manager": "workspace:*"
+  }
+}

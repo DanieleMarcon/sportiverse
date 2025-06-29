@@ -1,0 +1,14 @@
+{
+  "name": "@sportiverse/common",
+  "version": "1.0.0",
+  "description": "Utils, tipi condivisi, hooks, constants",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

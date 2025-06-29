@@ -1,0 +1,16 @@
+{
+  "name": "@sportiverse/game-api-service",
+  "version": "1.0.0",
+  "description": "API per motore di gioco",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "build": "echo 'Building game-api service...'",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*",
+    "@sportiverse/allenatore-nato": "workspace:*"
+  }
+}

@@ -1,0 +1,37 @@
+/* TODO: Implementare CSS globale e design tokens */
+/* Design system Sportiverse */
+
+:root {
+  /* Colors */
+  --color-primary: #1a365d;
+  --color-secondary: #2d3748;
+  --color-accent: #3182ce;
+  --color-success: #38a169;
+  --color-warning: #d69e2e;
+  --color-error: #e53e3e;
+  
+  /* Typography */
+  --font-family-base: 'Inter', system-ui, sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.5;
+  
+  /* Spacing (8px system) */
+  --space-1: 0.5rem;  /* 8px */
+  --space-2: 1rem;    /* 16px */
+  --space-3: 1.5rem;  /* 24px */
+  --space-4: 2rem;    /* 32px */
+  --space-6: 3rem;    /* 48px */
+  --space-8: 4rem;    /* 64px */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  margin: 0;
+  padding: 0;
+}

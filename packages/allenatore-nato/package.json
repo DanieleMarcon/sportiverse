@@ -1,0 +1,17 @@
+{
+  "name": "@sportiverse/allenatore-nato",
+  "version": "1.0.0",
+  "description": "Motore di simulazione per gioco manageriale",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

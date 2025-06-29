@@ -1,0 +1,15 @@
+{
+  "name": "@sportiverse/licensing-service",
+  "version": "1.0.0",
+  "description": "Servizio di gestione licenze",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "build": "echo 'Building licensing service...'",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  }
+}

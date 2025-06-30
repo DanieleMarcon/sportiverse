@@ -3,9 +3,9 @@
 Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo locale funzionante di **Sport Manager** e **Allenatore Nato**. Spunta ogni voce quando è stata completata.
 
 ## 1. Configurazione di Base
-- [ ] Clonare il repository e installare le dipendenze con `pnpm install`.
+- [x] Clonare il repository e installare le dipendenze con `pnpm install`.
 - [ ] Creare `.env.local` con `BOLT_WORKSPACE_ID`, `BOLT_API_KEY`, `JWT_SECRET` e parametri SMTP.
-- [ ] Avviare il workspace con `pnpm dev` (portali `play`, `club`, `agents`).
+- [x] Avviare il workspace con `pnpm dev` (portali `play`, `club`, `agents`).
 
 ## 2. Dati di Esempio
 - [ ] Popolare i dataset con atleti, utenti, partite e documenti di test.

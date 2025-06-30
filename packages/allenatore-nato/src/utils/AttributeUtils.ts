@@ -1,7 +1,8 @@
 // ⚽ Attribute Utils - Utility per gestione attributi giocatori
 // Funzioni per calcoli e manipolazione attributi
 
-import type { PlayerAttributes, PlayerPosition } from '../types/PlayerTypes'
+import type { PlayerAttributes } from '@common/types/PlayerTypes'
+import { PlayerPosition } from '@common/types/PlayerTypes'
 import { GameUtils } from './GameUtils'
 
 export class AttributeUtils {

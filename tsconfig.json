@@ -21,7 +21,8 @@
       "@game/*": ["packages/allenatore-nato/src/*"],
       "@remi/*": ["packages/remi/src/*"],
       "@common/*": ["packages/common/src/*"],
-      "@style/*": ["packages/style/*"]
+      "@style/*": ["packages/style/*"],
+      "bolt:data": ["tools/local-data-stub.ts"]
     }
   },
   "include": [

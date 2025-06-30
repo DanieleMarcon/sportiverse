@@ -36,6 +36,7 @@ function createDataset(store: any[], prefix: string, bulk = false) {
   return {
     get: async (id: string) => store.find(i => i.id === id) || null,
     find: async (query: any = {}) => store.filter(i => match(i, query)),
+    findOne: async (query: any = {}) => store.find(i => match(i, query)) || null,
     insert: async (data: any) => {
       const id = data.id || generateId(prefix);
       store.push({ ...data, id });

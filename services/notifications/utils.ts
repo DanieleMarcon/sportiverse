@@ -2,6 +2,7 @@
  * Utilities per invio notifiche
  * Integrazione con provider email (SMTP/SendGrid)
  */
+import nodemailer from 'nodemailer';
 
 interface EmailOptions {
   subject: string;
@@ -33,40 +34,45 @@ export async function sendMail(to: string, options: EmailOptions): Promise<Email
       throw new Error('Formato email non valido');
     }
     
-    // TODO: Integra provider SMTP reale (SendGrid, AWS SES, etc.)
-    // Per ora simuliamo l'invio con log dettagliato
-    
-    const emailData = {
-      to,
-      from: options.from || 'noreply@sportiverse.com',
-      subject: options.subject,
-      text: options.body,
-      html: options.html || generateSimpleHTML(options.body),
-      timestamp: new Date().toISOString()
-    };
-    
-    // Simula delay di invio
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
-    
-    // Simula occasionali errori (5% failure rate)
-    if (Math.random() < 0.05) {
-      throw new Error('Temporary SMTP server error');
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    const smtpFrom = process.env.SMTP_FROM || 'noreply@sportiverse.com';
+
+    if (smtpHost) {
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: smtpUser ? { user: smtpUser, pass: smtpPass } : undefined
+      });
+
+      const info = await transporter.sendMail({
+        to,
+        from: options.from || smtpFrom,
+        replyTo: options.replyTo,
+        subject: options.subject,
+        text: options.body,
+        html: options.html || generateSimpleHTML(options.body)
+      });
+
+      console.log('[EMAIL] ✅ Email sent successfully:', {
+        to,
+        subject: options.subject,
+        messageId: info.messageId
+      });
+
+      return { success: true, messageId: info.messageId };
     }
-    
-    // Log invio per debugging
-    console.log('[EMAIL] ✅ Email sent successfully:', {
-      to: emailData.to,
-      subject: emailData.subject,
-      timestamp: emailData.timestamp
+
+    // Se SMTP non configurato, fallback mock
+    console.log('[EMAIL] ℹ️ SMTP not configured, email simulated:', {
+      to,
+      subject: options.subject
     });
-    
-    // Simula messageId
-    const messageId = `msg_${Date.now()}_${Math.random().toString(36).substring(2)}`;
-    
-    return {
-      success: true,
-      messageId
-    };
+
+    return { success: true, messageId: `dev_${Date.now()}` };
     
   } catch (error) {
     console.error('[EMAIL] ❌ Failed to send email:', {

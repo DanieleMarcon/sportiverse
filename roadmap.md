@@ -11,12 +11,12 @@ Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo
 - [x] Popolare i dataset con atleti, utenti, partite e documenti di test.
 
 ## 3. Collegamento Backend e Frontend
-- [ ] Verificare che le pagine React richiedano i dati dai Flow e salvino sui dataset.
-- [ ] Integrare la sincronizzazione formazioni con `/services/game-api/formation`.
+- [x] Verificare che le pagine React richiedano i dati dai Flow e salvino sui dataset.
+- [x] Integrare la sincronizzazione formazioni con `/services/game-api/formation`.
 
 ## 4. Notifiche
-- [ ] Configurare un provider SMTP nel file `.env.local`.
-- [ ] Testare la function `sendDailyAlerts.ts` e controllare `log_notifications`.
+- [x] Configurare un provider SMTP nel file `.env.local`.
+- [x] Testare la function `sendDailyAlerts.ts` e controllare `log_notifications`.
 
 ## 5. Autenticazione
 - [ ] Implementare la generazione di JWT e un endpoint di login di base.

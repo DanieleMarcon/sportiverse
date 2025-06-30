@@ -29,6 +29,9 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^4.6.0
         version: 4.6.2(eslint@8.57.1)
+      nodemailer:
+        specifier: ^6.9.11
+        version: 6.10.1
       playwright:
         specifier: ^1.40.0
         version: 1.53.1
@@ -211,6 +214,12 @@ importers:
         version: 5.8.3
 
   services/auth:
+    dependencies:
+      '@sportiverse/common':
+        specifier: workspace:*
+        version: link:../../packages/common
+
+  services/flows:
     dependencies:
       '@sportiverse/common':
         specifier: workspace:*
@@ -1688,6 +1697,7 @@ packages:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
     engines: {node: '>=12'}
     hasBin: true
+    requiresBuild: true
     optionalDependencies:
       '@esbuild/aix-ppc64': 0.21.5
       '@esbuild/android-arm': 0.21.5
@@ -2577,6 +2587,11 @@ packages:
 
   /node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
+    dev: true
+
+  /nodemailer@6.10.1:
+    resolution: {integrity: sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA==}
+    engines: {node: '>=6.0.0'}
     dev: true
 
   /npm-run-path@5.3.0:

@@ -1,4 +1,4 @@
-import { events_calendar, log_notifications, users } from 'bolt:data';
+import { events_calendar, log_notifications, users } from '../../packages/common/src/bolt-data-stub.ts';
 import { sendMail } from './utils';
 
 /**

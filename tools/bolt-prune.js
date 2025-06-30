@@ -23,6 +23,12 @@ const KEEP = [
   "apps/*/src/**"
 ]
 
+// Aggiungi nuovi pattern KEEP
+KEEP.push(
+  'apps/club/**',
+  'packages/ui/src/components/**'
+);
+
 const FILE_SIZE_LIMIT = 1024 * 1024 // 1MB
 
 async function pruneRepository() {
@@ -42,6 +48,7 @@ async function pruneRepository() {
   // Rispettando i pattern in KEEP
   console.log('✅ Ottimizzazione completata')
   console.log('📝 File legacy mantenuti per migrazione React')
+  console.log('📝 App club e componenti UI preservati')
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

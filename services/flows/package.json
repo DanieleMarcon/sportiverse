@@ -1,0 +1,14 @@
+{
+  "name": "@sportiverse/flows-service",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "build": "echo 'building flows service'",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  }
+}

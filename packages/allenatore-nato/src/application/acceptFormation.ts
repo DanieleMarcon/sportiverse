@@ -144,7 +144,7 @@ function validateFormation(squad: FormationPlayer[]): { isValid: boolean; errors
   const validPositions = ['GK', 'CB', 'LB', 'RB', 'LWB', 'RWB', 'CDM', 'CM', 'CAM', 'LM', 'RM', 'LW', 'RW', 'CF', 'ST'];
   for (const player of squad) {
     if (!validPositions.includes(player.position)) {
-      errors.push(`Posizione non valida: ${player.position} per giocatore ${player.athlete_id}`);
+      errors.push(`Posizione non valida: ${player.position}`);
     }
   }
   

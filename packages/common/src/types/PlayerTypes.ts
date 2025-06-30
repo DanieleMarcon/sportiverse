@@ -76,21 +76,28 @@ export interface TeamStatistics {
 }
 
 export enum PlayerPosition {
+  // Portieri
   GK = 'GK',
-  CB = 'CB',
-  LB = 'LB',
-  RB = 'RB',
-  LWB = 'LWB',
-  RWB = 'RWB',
-  CDM = 'CDM',
-  CM = 'CM',
-  CAM = 'CAM',
-  LM = 'LM',
-  RM = 'RM',
-  LW = 'LW',
-  RW = 'RW',
-  CF = 'CF',
-  ST = 'ST'
+  
+  // Difensori
+  CB = 'CB',   // Centrale
+  LB = 'LB',   // Terzino sinistro
+  RB = 'RB',   // Terzino destro
+  LWB = 'LWB', // Esterno sinistro
+  RWB = 'RWB', // Esterno destro
+  
+  // Centrocampisti
+  CDM = 'CDM', // Mediano difensivo
+  CM = 'CM',   // Centrale
+  CAM = 'CAM', // Trequartista
+  LM = 'LM',   // Esterno sinistro
+  RM = 'RM',   // Esterno destro
+  
+  // Attaccanti
+  LW = 'LW',   // Ala sinistra
+  RW = 'RW',   // Ala destra
+  CF = 'CF',   // Centravanti
+  ST = 'ST'    // Punta
 }
 
 export enum InjuryStatus {

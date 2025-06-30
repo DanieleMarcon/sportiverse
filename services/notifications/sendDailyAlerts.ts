@@ -34,30 +34,30 @@ export default async function sendDailyAlerts() {
       try {
         // Verifica se già notificato
         const existingNotification = await log_notifications.findOne({ 
-          event_id: event.id,
+          event_id: (event as any).id,
           channel_enum: 'email'
         });
         
         if (existingNotification) {
-          console.log(`[CRON] Event ${event.id} already notified, skipping`);
+          console.log(`[CRON] Event ${(event as any).id} already notified, skipping`);
           skippedCount++;
           continue;
         }
         
         // Trova utente target (club owner o responsabile)
-        const targetUser = await users.get(event.club_id);
-        if (!targetUser || !targetUser.email) {
-          console.warn(`[CRON] No valid email for club ${event.club_id}, skipping event ${event.id}`);
+        const targetUser = await users.get((event as any).club_id);
+        if (!targetUser || !(targetUser as any).email) {
+          console.warn(`[CRON] No valid email for club ${(event as any).club_id}, skipping event ${(event as any).id}`);
           skippedCount++;
           continue;
         }
         
         // Prepara contenuto email
-        const emailSubject = `⚠️ Promemoria: ${formatEventType(event.type_enum)} in scadenza`;
+        const emailSubject = `⚠️ Promemoria: ${formatEventType((event as any).type_enum)} in scadenza`;
         const emailBody = generateEmailBody(event, targetUser);
         
         // Invia email
-        const deliveryResult = await sendMail(targetUser.email, {
+        const deliveryResult = await sendMail((targetUser as any).email, {
           subject: emailSubject,
           body: emailBody,
           html: generateEmailHTML(event, targetUser)
@@ -65,8 +65,8 @@ export default async function sendDailyAlerts() {
         
         // Log notifica inviata
         await log_notifications.insert({
-          event_id: event.id,
-          user_id: event.club_id,
+          event_id: (event as any).id,
+          user_id: (event as any).club_id,
           channel_enum: 'email',
           sent_at: new Date(),
           delivery_status: deliveryResult.success ? 'sent' : 'failed',
@@ -75,25 +75,25 @@ export default async function sendDailyAlerts() {
         
         if (deliveryResult.success) {
           sentCount++;
-          console.log(`[CRON] ✅ Notification sent for event ${event.id} to ${targetUser.email}`);
+          console.log(`[CRON] ✅ Notification sent for event ${(event as any).id} to ${(targetUser as any).email}`);
         } else {
           errorCount++;
-          console.error(`[CRON] ❌ Failed to send notification for event ${event.id}: ${deliveryResult.error}`);
+          console.error(`[CRON] ❌ Failed to send notification for event ${(event as any).id}: ${deliveryResult.error}`);
         }
         
       } catch (eventError) {
         errorCount++;
-        console.error(`[CRON] Error processing event ${event.id}:`, eventError);
+        console.error(`[CRON] Error processing event ${(event as any).id}:`, eventError);
         
         // Log errore
         try {
           await log_notifications.insert({
-            event_id: event.id,
-            user_id: event.club_id,
+            event_id: (event as any).id,
+            user_id: (event as any).club_id,
             channel_enum: 'email',
             sent_at: new Date(),
             delivery_status: 'failed',
-            error_message: eventError.message
+            error_message: (eventError as Error).message
           });
         } catch (logError) {
           console.error('[CRON] Failed to log error notification:', logError);
@@ -118,7 +118,7 @@ export default async function sendDailyAlerts() {
     console.error('[CRON] Fatal error in daily alerts job:', error);
     return {
       success: false,
-      error: error.message
+      error: (error as Error).message
     };
   }
 }
@@ -127,7 +127,7 @@ export default async function sendDailyAlerts() {
  * Formatta tipo evento per display
  */
 function formatEventType(type: string): string {
-  const typeMap = {
+  const typeMap: Record<string, string> = {
     'visita_medica': 'Visita Medica',
     'compleanno': 'Compleanno',
     'convocazione': 'Convocazione',
@@ -144,7 +144,7 @@ function formatEventType(type: string): string {
  * Genera corpo email testuale
  */
 function generateEmailBody(event: any, user: any): string {
-  const eventDate = new Date(event.due_at).toLocaleDateString('it-IT', {
+  const eventDate = new Date((event as any).due_at).toLocaleDateString('it-IT', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -154,15 +154,15 @@ function generateEmailBody(event: any, user: any): string {
   });
   
   return `
-Ciao ${user.first_name || 'Utente'},
+Ciao ${(user as any).first_name || 'Utente'},
 
 Ti ricordiamo che hai un evento in scadenza:
 
-📅 Evento: ${formatEventType(event.type_enum)}
+📅 Evento: ${formatEventType((event as any).type_enum)}
 🕐 Data: ${eventDate}
-📝 Descrizione: ${event.description || 'Nessuna descrizione'}
+📝 Descrizione: ${(event as any).description || 'Nessuna descrizione'}
 
-${event.location ? `📍 Luogo: ${event.location}` : ''}
+${(event as any).location ? `📍 Luogo: ${(event as any).location}` : ''}
 
 Per maggiori dettagli, accedi alla tua dashboard Sport Manager.
 
@@ -178,7 +178,7 @@ Questa è una notifica automatica. Non rispondere a questa email.
  * Genera corpo email HTML
  */
 function generateEmailHTML(event: any, user: any): string {
-  const eventDate = new Date(event.due_at).toLocaleDateString('it-IT', {
+  const eventDate = new Date((event as any).due_at).toLocaleDateString('it-IT', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -211,15 +211,15 @@ function generateEmailHTML(event: any, user: any): string {
     </div>
     
     <div class="content">
-      <p>Ciao <strong>${user.first_name || 'Utente'}</strong>,</p>
+      <p>Ciao <strong>${(user as any).first_name || 'Utente'}</strong>,</p>
       
       <p>Ti ricordiamo che hai un evento in scadenza:</p>
       
       <div class="event-card">
-        <h3>📅 ${formatEventType(event.type_enum)}</h3>
+        <h3>📅 ${formatEventType((event as any).type_enum)}</h3>
         <p><strong>Data:</strong> ${eventDate}</p>
-        <p><strong>Descrizione:</strong> ${event.description || 'Nessuna descrizione'}</p>
-        ${event.location ? `<p><strong>Luogo:</strong> ${event.location}</p>` : ''}
+        <p><strong>Descrizione:</strong> ${(event as any).description || 'Nessuna descrizione'}</p>
+        ${(event as any).location ? `<p><strong>Luogo:</strong> ${(event as any).location}</p>` : ''}
       </div>
       
       <p style="text-align: center;">

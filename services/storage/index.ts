@@ -33,7 +33,7 @@ export async function uploadFile(file: File): Promise<string> {
     
   } catch (error) {
     console.error('[STORAGE] Upload failed:', error);
-    throw new Error(`Upload fallito: ${error.message}`);
+    throw new Error(`Upload fallito: ${(error as Error).message}`);
   }
 }
 

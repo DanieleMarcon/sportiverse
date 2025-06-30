@@ -3,8 +3,8 @@
 
 import { MatchEngine } from '../engine/MatchEngine'
 import { TacticsEngine } from '../engine/TacticsEngine'
-import type { Team, Player, Match, Tactics } from '../types/GameTypes'
-import type { MatchResult, MatchEvent } from '../types/MatchTypes'
+import type { Team, Player, Match, Tactics } from '@common/types/GameTypes'
+import type { MatchResult } from '@common/types/GameTypes'
 
 export class SimulationService {
   /**
@@ -109,7 +109,7 @@ export interface FullMatchResult {
     awayTeam: string
     homeScore: number
     awayScore: number
-    events: MatchEvent[]
+    events: any[]
   }
   statistics: any
   playerRatings: Record<string, number>

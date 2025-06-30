@@ -83,6 +83,38 @@ export async function sendMail(to: string, options: EmailOptions): Promise<Email
 }
 
 /**
+ * Genera HTML semplice da testo
+ */
+function generateSimpleHTML(text: string): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { border-bottom: 2px solid #1e40af; padding-bottom: 10px; margin-bottom: 20px; }
+    .footer { border-top: 1px solid #ddd; padding-top: 10px; margin-top: 20px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>⚽ Sportiverse</h2>
+  </div>
+  
+  <div class="content">
+    ${text.split('\n').map(line => `<p>${line}</p>`).join('')}
+  </div>
+  
+  <div class="footer">
+    <p>&copy; 2025 Sportiverse - Sport Manager CRM</p>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+/**
  * Invia notifica push (placeholder)
  */
 export async function sendPushNotification(userId: string, title: string, body: string): Promise<EmailResult> {
@@ -121,114 +153,5 @@ export async function sendSMS(phoneNumber: string, message: string): Promise<Ema
       success: false,
       error: error.message
     };
-  }
-}
-
-/**
- * Genera HTML semplice da testo
- */
-function generateSimpleHTML(text: string): string {
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { border-bottom: 2px solid #1e40af; padding-bottom: 10px; margin-bottom: 20px; }
-    .footer { border-top: 1px solid #ddd; padding-top: 10px; margin-top: 20px; font-size: 12px; color: #666; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h2>⚽ Sportiverse</h2>
-  </div>
-  
-  <div class="content">
-    ${text.split('\n').map(line => `<p>${line}</p>`).join('')}
-  </div>
-  
-  <div class="footer">
-    <p>&copy; 2025 Sportiverse - Sport Manager CRM</p>
-  </div>
-</body>
-</html>
-  `.trim();
-}
-
-/**
- * Valida template email
- */
-export function validateEmailTemplate(template: string, variables: Record<string, any>): boolean {
-  try {
-    // Verifica che tutte le variabili richieste siano presenti
-    const requiredVars = template.match(/\{\{(\w+)\}\}/g) || [];
-    
-    for (const varMatch of requiredVars) {
-      const varName = varMatch.replace(/\{\{|\}\}/g, '');
-      if (!(varName in variables)) {
-        console.warn(`[EMAIL] Missing template variable: ${varName}`);
-        return false;
-      }
-    }
-    
-    return true;
-    
-  } catch (error) {
-    console.error('[EMAIL] Template validation error:', error);
-    return false;
-  }
-}
-
-/**
- * Sostituisce variabili in template
- */
-export function renderEmailTemplate(template: string, variables: Record<string, any>): string {
-  let rendered = template;
-  
-  for (const [key, value] of Object.entries(variables)) {
-    const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
-    rendered = rendered.replace(regex, String(value));
-  }
-  
-  return rendered;
-}
-
-/**
- * Configurazione provider email
- */
-export interface EmailConfig {
-  provider: 'smtp' | 'sendgrid' | 'ses';
-  apiKey?: string;
-  host?: string;
-  port?: number;
-  username?: string;
-  password?: string;
-  secure?: boolean;
-}
-
-/**
- * Inizializza provider email
- */
-export async function initializeEmailProvider(config: EmailConfig): Promise<boolean> {
-  try {
-    // TODO: Implementa inizializzazione provider reale
-    console.log(`[EMAIL] Initializing ${config.provider} provider...`);
-    
-    // Validazione configurazione
-    if (config.provider === 'smtp' && (!config.host || !config.port)) {
-      throw new Error('SMTP provider requires host and port');
-    }
-    
-    if (config.provider === 'sendgrid' && !config.apiKey) {
-      throw new Error('SendGrid provider requires API key');
-    }
-    
-    console.log(`[EMAIL] ✅ ${config.provider} provider initialized successfully`);
-    return true;
-    
-  } catch (error) {
-    console.error('[EMAIL] ❌ Failed to initialize email provider:', error);
-    return false;
   }
 }

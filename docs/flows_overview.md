@@ -578,7 +578,34 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 
 ---
 
-### 22. **Document_Upload**
+### 22. **Notification\_SendDaily**
+
+**Trigger**: Cron job giornaliero (07:00 UTC)
+**Input richiesto**:
+
+* Data corrente
+* Finestra temporale (24 ore)
+
+**Logica step-by-step**:
+
+1. Query eventi in scadenza nelle prossime 24 ore
+2. Filtra eventi già notificati (evita duplicati)
+3. Per ogni evento: trova utente target
+4. Genera contenuto email personalizzato
+5. Invia email tramite provider SMTP
+6. Salva log notifica in `log_notifications`
+7. Gestisce errori e retry automatici
+
+**Dataset coinvolti**:
+
+* `events_calendar`, `log_notifications`, `users`
+
+**Output**: Notifiche inviate, log completo
+**Moduli associati**: Calendario, Notifiche
+
+---
+
+### 23. **Document\_Upload**
 
 **Trigger**: Upload documento atleta da interfaccia CRM
 **Input richiesto**:
@@ -609,7 +636,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 
 ---
 
-### 23. **Athlete_AddNote**
+### 24. **Athlete_AddNote**
 
 **Trigger**: Aggiunta nota tecnica da parte dell'allenatore
 **Input richiesto**:
@@ -639,7 +666,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 
 ---
 
-### 24. **Lineup_Submit**
+### 25. **Lineup\_Submit**
 
 **Trigger**: Invio formazione partita da parte dell'allenatore
 **Input richiesto**:
@@ -691,6 +718,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 | Scouting\_Update              | Scout, Shortlist      | Avanzamento scouting                 | `discovery_level`, `attribute_masking`, `scouting_accuracy`, `shortlist`, `game_events`   | Progresso osservazione aggiornato      | -             |
 | Discovery\_Complete           | Scout, Match Analysis | Completamento osservazione           | `discovery_level`, `attribute_masking`, `game_events`, `press_releases`                   | Giocatore scoperto                     | -             |
 | Press\_Center\_Display        | Notizie, Eventi       | Apertura Press Center                | `press_releases`, `game_events`                                                           | Lista notizie formattata               | -             |
+| Notification\_SendDaily       | Calendario, Notifiche | Cron job giornaliero                 | `events_calendar`, `log_notifications`, `users`                                           | Notifiche inviate, log completo        | SYSTEM        |
 | Document\_Upload              | CRM Atleti            | Upload documento atleta              | `documents`, `athletes`                                                                   | Documento caricato con successo        | DIRIGENTE     |
 | Athlete\_AddNote              | CRM Atleti            | Aggiunta nota tecnica                | `athlete_notes`, `athletes`                                                               | Nota tecnica aggiunta                  | ALLENATORE    |
 | Lineup\_Submit                | CRM Formazioni        | Invio formazione partita             | `lineups`, `lineup_players`, `matches`                                                   | Formazione sincronizzata con Game      | ALLENATORE    |
@@ -721,6 +749,11 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 * `Athlete_AddNote` → sistema note tecniche per allenatori
 * `Lineup_Submit` → sincronizzazione formazioni CRM ↔ Game Engine
 
+### Flow Notifiche
+
+* `Notification_SendDaily` → cron job per notifiche automatiche
+* `Calendar_FetchUpcomingEvents` → fornisce eventi per notifiche
+
 ### Flow Indipendenti
 
 * `UserSettings_Apply`
@@ -739,9 +772,10 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 4. **Fase 4**: `Transfer_Offer`, `Transfer_Process`, `Board_Evaluate`, `Scouting_Discover`, `Staff_AssignRole`
 5. **Fase 5**: `Discovery_Complete`, `Press_Center_Display`, `Calendar_FetchUpcomingEvents`, `Report_CompileHistory`
 6. **Fase 6**: `Document_Upload`, `Athlete_AddNote`, `Lineup_Submit` (CRM Integration)
+7. **Fase 7**: `Notification_SendDaily` (Sistema Notifiche Automatiche)
 
 ---
 
 *Documentazione aggiornata al: Giugno 2025*
-*Versione flow: 1.2*
+*Versione flow: 1.3*
 *Compatibilità Bolt.new: Tutte le versioni*

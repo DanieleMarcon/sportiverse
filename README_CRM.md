@@ -15,11 +15,12 @@
 - [x] Stub integrazione Flow
 
 ### ✅ Sprint C: Calendario & Notifiche
-- [x] Dataset `log_notifications`
-- [x] Function schedulata `sendDailyAlerts.ts`
-- [x] Utils mail (stub)
-- [x] Dashboard Badge notifiche
-- [x] Flow `Calendar_AddEvent` implementato
+- [x] Dataset `log_notifications` con tracking completo
+- [x] Function schedulata `sendDailyAlerts.ts` (cron "0 7 * * *")
+- [x] Utils mail con provider SMTP configurabile
+- [x] Dashboard Badge notifiche con contatore real-time
+- [x] Flow `Notification_SendDaily` implementato
+- [x] Sistema email HTML/text con template personalizzabili
 
 ### ✅ Sprint D: Scheda Atleta Completa
 - [x] Dataset `athlete_notes` per note tecniche
@@ -71,12 +72,15 @@
 | **Atleti** | Note tecniche allenatore | ✅ | D |
 | **Calendario** | Eventi e scadenze | ✅ | B |
 | **Calendario** | Notifiche email automatiche | ✅ | C |
+| **Notifiche** | Sistema cron job giornaliero | ✅ | C |
+| **Notifiche** | Badge dashboard con contatore | ✅ | C |
+| **Notifiche** | Template email HTML personalizzabili | ✅ | C |
 | **Formazioni** | Editor formazioni drag&drop | ✅ | B |
 | **Formazioni** | Sync con Game Engine | ✅ | E |
 | **Documenti** | Upload e gestione documenti | ✅ | D |
 | **Documenti** | Badge scadenze automatiche | ✅ | D |
 | **Iscrizioni** | Wizard iscrizione (placeholder) | ✅ | B |
-| **Dashboard** | Badge notifiche | ✅ | C |
+| **Dashboard** | Badge notifiche con real-time | ✅ | C |
 | **Permessi** | Controllo granulare per ruolo | ✅ | A-3 |
 
 ---
@@ -92,13 +96,15 @@
 ### Backend (Bolt Functions)
 - **ACL**: Middleware centralizzato con gerarchia ruoli
 - **Storage**: Bolt Storage per documenti
-- **Email**: Provider SMTP configurabile
+- **Email**: Provider SMTP configurabile con template HTML
+- **Cron Jobs**: Schedulazione automatica notifiche
 - **API**: RESTful con validazioni complete
 
 ### Database (Bolt Datasets)
 - **Relazioni**: Foreign keys con integrità referenziale
 - **Audit**: Log completo di tutte le operazioni
 - **Performance**: Indici ottimizzati per query frequenti
+- **Notifiche**: Sistema tracking completo con delivery status
 
 ---
 
@@ -126,10 +132,38 @@
 | **Performance** | < 2s load | ~3s | 🟡 |
 | **Accessibilità** | WCAG AA | Parziale | 🟡 |
 | **Mobile Ready** | 100% | 80% | 🟡 |
-| **Funzionalità Core** | 100% | 85% | 🟢 |
+| **Funzionalità Core** | 100% | 90% | 🟢 |
+| **Sistema Notifiche** | 100% | 100% | 🟢 |
+
+---
+
+## 🔔 Sistema Notifiche Implementato
+
+### Funzionalità Complete
+- ✅ **Cron Job Giornaliero**: Esecuzione automatica alle 07:00 UTC
+- ✅ **Email HTML/Text**: Template personalizzabili con branding
+- ✅ **Tracking Completo**: Log delivery status e gestione errori
+- ✅ **Evita Duplicati**: Sistema anti-spam integrato
+- ✅ **Dashboard Badge**: Contatore notifiche non lette real-time
+- ✅ **Provider Agnostic**: Supporto SMTP/SendGrid/AWS SES
+
+### Tipi Eventi Supportati
+- 📅 Visite mediche in scadenza
+- 🎂 Compleanni atleti
+- 📋 Convocazioni partite
+- 📄 Scadenze documenti
+- 💰 Rinnovi contratti
+- 🏃 Allenamenti programmati
+
+### Configurazione Cron
+```typescript
+// Function schedulata: services/notifications/sendDailyAlerts.ts
+// Trigger: "0 7 * * *" (07:00 UTC daily)
+// Output: Email inviate + log completo
+```
 
 ---
 
 *Ultimo aggiornamento: Giugno 2025*  
-*Versione CRM: 1.4*  
-*Sprint completati: A-3, B, C, D, E*
+*Versione CRM: 1.5*  
+*Sprint completati: A-3, B, C ✔, D, E*

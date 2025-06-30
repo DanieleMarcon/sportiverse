@@ -1,9 +1,4 @@
-// TODO: Implementare utilities condivise
-// - Tipi TypeScript
-// - Hooks React
-// - Costanti
-// - Utilities
-
+// Common package exports
 export const COMMON_VERSION = '1.0.0'
 
 export interface User {
@@ -17,3 +12,8 @@ export const API_ENDPOINTS = {
   LICENSING: '/api/licensing',
   GAME: '/api/game'
 } as const
+
+// Re-export models and types
+export * from './models';
+export * from './types/GameTypes';
+export * from './types/PlayerTypes';

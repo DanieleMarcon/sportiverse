@@ -22,7 +22,7 @@
       "@remi/*": ["packages/remi/src/*"],
       "@common/*": ["packages/common/src/*"],
       "@style/*": ["packages/style/*"],
-      "bolt:data": ["tools/local-data-stub.ts"]
+      "bolt:data": ["packages/common/src/bolt-data-stub.ts"]
     }
   },
   "include": [

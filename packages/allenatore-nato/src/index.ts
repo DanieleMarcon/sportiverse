@@ -9,12 +9,6 @@ export * from './engine/TacticsEngine'
 export * from './engine/TrainingEngine'
 export * from './engine/TransferEngine'
 
-// Data Models
-export * from './models/Player'
-export * from './models/Team'
-export * from './models/Match'
-export * from './models/Tactics'
-
 // Services
 export * from './services/GameService'
 export * from './services/SimulationService'
@@ -25,10 +19,27 @@ export * from './utils/GameUtils'
 export * from './utils/AttributeUtils'
 export * from './utils/RandomUtils'
 
-// Types
-export * from './types/GameTypes'
-export * from './types/PlayerTypes'
-export * from './types/MatchTypes'
+// Application
+export * from './application/acceptFormation'
 
-// TODO: Implementare tutti i moduli sopra elencati
-// Seguendo la documentazione in docs/datasets_overview.md e docs/flows_overview.md
+// Re-export types from common
+export type {
+  Player,
+  Team,
+  Match,
+  Tactics,
+  PlayerPosition,
+  TeamStatistics,
+  MatchResult,
+  GameState,
+  GameData
+} from "@common/types/GameTypes";
+
+export type {
+  PlayerAttributes,
+  PlayerStatistics,
+  PlayerDevelopment
+} from "@common/types/PlayerTypes";
+
+export { MatchStatus } from "@common/types/GameTypes";
+export { PlayerPosition as PlayerPositionEnum, InjuryStatus } from "@common/types/PlayerTypes";

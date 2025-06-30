@@ -8,7 +8,7 @@ Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo
 - [x] Avviare il workspace con `pnpm dev` (portali `play`, `club`, `agents`).
 
 ## 2. Dati di Esempio
-- [ ] Popolare i dataset con atleti, utenti, partite e documenti di test.
+- [x] Popolare i dataset con atleti, utenti, partite e documenti di test.
 
 ## 3. Collegamento Backend e Frontend
 - [ ] Verificare che le pagine React richiedano i dati dai Flow e salvino sui dataset.

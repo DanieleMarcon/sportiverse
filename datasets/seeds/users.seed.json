@@ -1,0 +1,22 @@
+[
+  {
+    "id": "user-1",
+    "email": "dirigente@example.com",
+    "first_name": "Luigi",
+    "last_name": "Bianchi",
+    "role": "DIRIGENTE",
+    "club_id": "club-1",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "user-2",
+    "email": "allenatore@example.com",
+    "first_name": "Mauro",
+    "last_name": "Verdi",
+    "role": "ALLENATORE",
+    "club_id": "club-1",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  }
+]

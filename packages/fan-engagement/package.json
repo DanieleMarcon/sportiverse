@@ -1,0 +1,17 @@
+{
+  "name": "@sportiverse/fan-engagement",
+  "version": "0.1.0",
+  "description": "Strumenti di coinvolgimento tifosi e marketing",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

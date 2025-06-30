@@ -30,5 +30,5 @@ Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo
 - [x] Eseguire i test end-to-end con Playwright.
 
 ## 8. Passi Successivi
-- [ ] Implementare i moduli degli sprint futuri (Dashboard Analytics, Gestione Pagamenti, Fan Engagement).
+- [x] Implementare i moduli degli sprint futuri (Dashboard Analytics, Gestione Pagamenti, Fan Engagement).
 

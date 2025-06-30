@@ -1,0 +1,17 @@
+{
+  "name": "@sportiverse/billing",
+  "version": "0.1.0",
+  "description": "Gestione pagamenti e quote associative",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

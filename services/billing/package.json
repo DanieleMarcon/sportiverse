@@ -1,0 +1,15 @@
+{
+  "name": "@sportiverse/billing-service",
+  "version": "0.1.0",
+  "description": "Service API per gestione pagamenti",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "build": "echo 'Building billing service...'",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@sportiverse/common": "workspace:*"
+  }
+}

@@ -22,6 +22,9 @@
       "@remi/*": ["packages/remi/src/*"],
       "@common/*": ["packages/common/src/*"],
       "@style/*": ["packages/style/*"],
+      "@analytics/*": ["packages/analytics-dashboard/src/*"],
+      "@billing/*": ["packages/billing/src/*"],
+      "@fan/*": ["packages/fan-engagement/src/*"],
       "bolt:data": ["packages/common/src/bolt-data-stub.ts"]
     }
   },

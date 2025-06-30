@@ -1,14 +1,13 @@
-// TODO: Implementare servizio di autenticazione
-// - JWT RS256 con rotazione chiave
-// - Gestione sessioni
-// - OAuth providers
+import loginHandler from './login.ts';
 
-export default async function handler(req, res) {
-  return new Response(JSON.stringify({ 
-    service: 'auth',
-    status: 'TODO',
-    version: '1.0.0'
-  }), {
-    headers: { 'Content-Type': 'application/json' }
-  })
+export default async function handler(req) {
+  const url = new URL(req.url);
+  if (url.pathname.endsWith('/login')) {
+    return loginHandler(req);
+  }
+
+  return new Response(
+    JSON.stringify({ service: 'auth', status: 'OK', version: '1.0.0' }),
+    { headers: { 'Content-Type': 'application/json' } }
+  );
 }

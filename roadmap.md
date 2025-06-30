@@ -26,8 +26,8 @@ Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo
 - [x] Applicare `checkPermission.ts` e la mappa ACL a tutti i Flow sensibili.
 
 ## 7. Testing
-- [ ] Eseguire i test unitari con Vitest.
-- [ ] Eseguire i test end-to-end con Playwright.
+- [x] Eseguire i test unitari con Vitest.
+- [x] Eseguire i test end-to-end con Playwright.
 
 ## 8. Passi Successivi
 - [ ] Implementare i moduli degli sprint futuri (Dashboard Analytics, Gestione Pagamenti, Fan Engagement).

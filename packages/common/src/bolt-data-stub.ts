@@ -1,4 +1,4 @@
-// Stub locale sostitutivo di `bolt:data` per lo sviluppo fuori da Bolt
+// Stub locale per "bolt:data" (solo ambiente dev)
 export const matches = {
   get: async (id: string) => null,
   find: async (query: any) => [],
@@ -98,7 +98,7 @@ export const users = {
 };
 
 // Export default per compatibilità
-const data = {
+export const data = {
   matches,
   tactics,
   players,
@@ -113,4 +113,5 @@ const data = {
   users
 };
 
-export default { data };
+const bolt = { data };
+export default bolt;

@@ -19,8 +19,8 @@ Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo
 - [x] Testare la function `sendDailyAlerts.ts` e controllare `log_notifications`.
 
 ## 5. Autenticazione
-- [ ] Implementare la generazione di JWT e un endpoint di login di base.
-- [ ] Proteggere le rotte CRM con il middleware di autorizzazione.
+- [x] Implementare la generazione di JWT e un endpoint di login di base.
+- [x] Proteggere le rotte CRM con il middleware di autorizzazione.
 
 ## 6. Verifica Permessi
 - [ ] Applicare `checkPermission.ts` e la mappa ACL a tutti i Flow sensibili.

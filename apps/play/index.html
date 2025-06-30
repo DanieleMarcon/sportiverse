@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Allenatore Nato - Football Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Il gioco manageriale calcistico più realistico e coinvolgente">
+    <meta name="theme-color" content="#1e40af">
+    <style>
+      /* Basic styles for the landing page */
+      :root {
+        --primary: #1e40af;
+        --secondary: #1a7f37;
+        --accent: #f59e0b;
+        --background: #0f172a;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --text-secondary: #cbd5e1;
+      }
+      
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      
+      .hero {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+      
+      h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--text), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        max-width: 800px;
+        margin: 0 auto 2rem;
+      }
+      
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+      
+      .feature {
+        background: var(--surface);
+        padding: 2rem;
+        border-radius: 0.75rem;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+      
+      .feature:hover {
+        transform: translateY(-5px);
+      }
+      
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      
+      .feature h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .cta {
+        text-align: center;
+      }
+      
+      .button {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--primary), #1e3a8a);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 1.125rem;
+      }
+      
+      .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 0 20px rgba(30, 64, 175, 0.3);
+      }
+      
+      .footer {
+        text-align: center;
+        margin-top: 4rem;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+      
+      /* Stadium atmosphere background */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 80%, rgba(30, 64, 175, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(26, 127, 55, 0.1) 0%, transparent 50%),
+          linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        z-index: -1;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>⚽ Allenatore Nato</h1>
+            <p>Vivi l'emozione di guidare la tua squadra verso la gloria. Il football manager più realistico e coinvolgente ti aspetta.</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🏆</div>
+                <h3>Gestione Completa</h3>
+                <p>Controlla ogni aspetto della tua squadra: formazioni, tattiche, mercato, allenamenti e molto altro.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚽</div>
+                <h3>Simulazione Realistica</h3>
+                <p>Un motore di gioco avanzato che simula partite con eventi dinamici e statistiche dettagliate.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Statistiche Avanzate</h3>
+                <p>Analizza le performance dei tuoi giocatori con metriche avanzate e report dettagliati.</p>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <button class="button" id="startGameBtn">Inizia Nuova Carriera</button>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Sportiverse - Allenatore Nato</p>
+            <p>Versione Demo 1.0.0</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('startGameBtn').addEventListener('click', function() {
+            alert('Benvenuto ad Allenatore Nato! Questa è una versione demo. La versione completa sarà disponibile presto.');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[build]
+  base = "."
+  publish = "apps/play"
+  command = "echo 'Skipping build for demo'"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

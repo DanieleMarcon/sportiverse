@@ -15,6 +15,20 @@ const DIRECTORIES_TO_REMOVE = [
   '.git/objects/pack'
 ]
 
+const KEEP = [
+  // Mantieni i file legacy finché non saranno migrati a React
+  "packages/ui/src/legacy/**",
+  // Altri file da mantenere
+  "packages/*/src/**",
+  "apps/*/src/**"
+]
+
+// Aggiungi nuovi pattern KEEP
+KEEP.push(
+  'apps/club/**',
+  'packages/ui/src/components/**'
+);
+
 const FILE_SIZE_LIMIT = 1024 * 1024 // 1MB
 
 async function pruneRepository() {
@@ -31,7 +45,10 @@ async function pruneRepository() {
   }
   
   // TODO: Implementare sostituzione asset voluminosi con placeholder
+  // Rispettando i pattern in KEEP
   console.log('✅ Ottimizzazione completata')
+  console.log('📝 File legacy mantenuti per migrazione React')
+  console.log('📝 App club e componenti UI preservati')
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

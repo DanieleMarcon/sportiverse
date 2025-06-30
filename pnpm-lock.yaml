@@ -137,9 +137,15 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.0.0
         version: 4.6.0(vite@5.4.19)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.8.3
       vite:
         specifier: ^5.0.0
         version: 5.4.19(@types/node@20.19.2)
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.2)
 
   packages/allenatore-nato:
     dependencies:
@@ -150,6 +156,9 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.8.3
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.2)
 
   packages/common:
     devDependencies:

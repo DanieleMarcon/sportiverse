@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  publicDir: 'public',
   server: {
     port: 3000,
     host: true
@@ -12,9 +14,17 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@ui': '../packages/ui/src',
-      '@game': '../packages/allenatore-nato/src',
-      '@common': '../packages/common/src'
+      '@ui': path.resolve(__dirname, '../../packages/ui/src'),
+      '@game': path.resolve(__dirname, '../../packages/allenatore-nato/src'),
+      '@common': path.resolve(__dirname, '../../packages/common/src'),
+      '@': path.resolve(__dirname, './src')
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      css: {
+        charset: false
+      }
     }
   }
 })

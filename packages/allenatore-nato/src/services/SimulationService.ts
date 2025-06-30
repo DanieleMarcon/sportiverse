@@ -3,7 +3,8 @@
 
 import { MatchEngine } from '../engine/MatchEngine'
 import { TacticsEngine } from '../engine/TacticsEngine'
-import type { Team, Player, Tactics } from '../types/GameTypes'
+import type { Team, Tactics } from '../types/GameTypes'
+import type { Player } from '../types/PlayerTypes'
 import type { Match, MatchResult } from '../types/MatchTypes'
 
 export class SimulationService {

@@ -13,7 +13,8 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "format": "prettier --write .",
     "clean": "pnpm --recursive clean && rm -rf node_modules",
-    "docs:update": "node tools/docs-generator.js"
+    "docs:update": "node tools/docs-generator.js",
+    "install:force": "rm -rf node_modules pnpm-lock.yaml && pnpm install"
   },
   "workspaces": [
     "apps/*",

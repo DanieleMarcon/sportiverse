@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { runFlow } from '../utils/runFlow';
 import Tabs, { useTabState } from '@ui/components/Tabs';
 import DocumentList from '@ui/components/DocumentList';
 import UploadDropzone from '@ui/components/UploadDropzone';
@@ -103,103 +104,11 @@ export default function AthleteDetail() {
     
     setLoading(true);
     try {
-      // TODO: Replace with actual API calls
-      // Simulate API calls
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Mock athlete data
-      setAthlete({
-        id,
-        first_name: 'Marco',
-        last_name: 'Rossi',
-        birth_date: '1995-03-15',
-        position: 'Centrocampista',
-        team_id: 'team-1',
-        club_id: 'club-1',
-        attributes: {
-          pace: 78,
-          shooting: 82,
-          passing: 85,
-          defending: 65,
-          physical: 80
-        },
-        status: 'active',
-        contract_end: '2025-06-30',
-        market_value: 150000
-      });
-
-      // Mock documents with expired ones
-      setDocuments([
-        {
-          id: 'doc-1',
-          type: 'cartellino',
-          file_name: 'cartellino_rossi.pdf',
-          file_url: 'https://example.com/doc1.pdf',
-          expires_at: '2024-12-31',
-          created_at: '2024-01-15',
-          uploaded_by: 'admin'
-        },
-        {
-          id: 'doc-2',
-          type: 'visita_medica',
-          file_name: 'visita_medica_2024.pdf',
-          file_url: 'https://example.com/doc2.pdf',
-          expires_at: '2024-01-30', // Expired
-          created_at: '2023-06-15',
-          uploaded_by: 'admin'
-        },
-        {
-          id: 'doc-3',
-          type: 'certificato_medico',
-          file_name: 'certificato_medico.pdf',
-          file_url: 'https://example.com/doc3.pdf',
-          expires_at: '2024-02-15', // Expired
-          created_at: '2023-08-10',
-          uploaded_by: 'admin'
-        }
-      ]);
-
-      // Mock notes
-      setNotes([
-        {
-          id: 'note-1',
-          note_text: 'Ottima prestazione in allenamento. Migliorato il tiro da fuori area. Continua a lavorare sulla precisione nei passaggi lunghi.',
-          created_at: '2024-01-10',
-          coach_id: 'coach-1',
-          coach_name: 'Mister Bianchi',
-          visibility: 'team',
-          tags: ['tattica', 'fisica'],
-          priority: 'high'
-        },
-        {
-          id: 'note-2',
-          note_text: 'Buona condizione fisica generale. Necessario migliorare la resistenza per i 90 minuti.',
-          created_at: '2024-01-05',
-          coach_id: 'coach-1',
-          coach_name: 'Preparatore Verdi',
-          visibility: 'staff',
-          tags: ['fisica'],
-          priority: 'medium'
-        }
-      ]);
-
-      // Mock events
-      setEvents([
-        {
-          id: 'event-1',
-          type_enum: 'visita_medica',
-          due_at: '2024-06-15',
-          description: 'Visita medica di controllo annuale',
-          status: 'pending'
-        },
-        {
-          id: 'event-2',
-          type_enum: 'compleanno',
-          due_at: '2024-03-15',
-          description: 'Compleanno di Marco Rossi',
-          status: 'pending'
-        }
-      ]);
+      const data = await runFlow("Athlete_GetDetail", { athlete_id: id });
+      setAthlete(data.athlete);
+      setDocuments(data.documents || []);
+      setNotes(data.notes || []);
+      setEvents(data.events || []);
 
     } catch (err) {
       setError('Errore nel caricamento dei dati atleta');
@@ -211,18 +120,17 @@ export default function AthleteDetail() {
 
   const handleDocumentUpload = async (file: File) => {
     try {
-      // TODO: Call Document_Upload flow
-      console.log('Uploading document:', file.name);
-      
-      // Simulate upload
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Refresh documents list
+      await runFlow('Document_Upload', {
+        athlete_id: id,
+        file,
+        type: 'certificato_medico'
+      });
+
       await loadAthleteData();
-      
+
     } catch (error) {
       console.error('Upload error:', error);
-      throw new Error('Errore durante l\'upload del documento');
+      throw new Error("Errore durante l'upload del documento");
     }
   };
 
@@ -231,17 +139,13 @@ export default function AthleteDetail() {
     
     setIsAddingNote(true);
     try {
-      // TODO: Call Athlete_AddNote flow
-      console.log('Adding note:', {
+      await runFlow('Athlete_AddNote', {
         athlete_id: id,
         note_text: newNote,
         visibility: noteVisibility,
         tags: noteTags,
         priority: notePriority
       });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Reset form
       setNewNote('');

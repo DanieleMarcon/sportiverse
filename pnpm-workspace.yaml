@@ -2,3 +2,7 @@ packages:
   - 'apps/*'
   - 'packages/*'
   - 'services/*'
+
+# Ensure workspace protocol is properly handled
+prefer-workspace-packages: true
+link-workspace-packages: true

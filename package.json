@@ -4,6 +4,7 @@
   "description": "Piattaforma SaaS modulare per società sportive e gaming manageriale",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@8.15.4",
   "scripts": {
     "dev": "pnpm --parallel --recursive dev",
     "build": "pnpm --recursive build",

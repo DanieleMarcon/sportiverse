@@ -23,7 +23,7 @@ Questa roadmap ti aiuta a tenere traccia delle attività necessarie per una demo
 - [x] Proteggere le rotte CRM con il middleware di autorizzazione.
 
 ## 6. Verifica Permessi
-- [ ] Applicare `checkPermission.ts` e la mappa ACL a tutti i Flow sensibili.
+- [x] Applicare `checkPermission.ts` e la mappa ACL a tutti i Flow sensibili.
 
 ## 7. Testing
 - [ ] Eseguire i test unitari con Vitest.

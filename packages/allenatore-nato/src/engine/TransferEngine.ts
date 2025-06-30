@@ -26,12 +26,12 @@ export class TransferEngine {
 
     console.log(`💰 Processando offerta per ${player.name}: €${offer.amount}`)
     
-    return {
-      accepted: false,
-      counterOffer: null,
-      reason: 'Offerta troppo bassa',
-      negotiationId: 'temp-id'
-    }
+      return {
+        accepted: false,
+        counterOffer: undefined,
+        reason: 'Offerta troppo bassa',
+        negotiationId: 'temp-id'
+      }
   }
 
   /**

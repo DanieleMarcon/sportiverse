@@ -56,8 +56,9 @@ export async function acceptFormation(
     const formationId = `formation_${matchId}_${Date.now()}`;
     
     // Aggiorna match con formazione
+    const payload = { ...match } as any;
     const updatedMatch = {
-      ...match,
+      ...payload,
       lineup: starters.map(p => ({
         athlete_id: p.athlete_id,
         position: p.position,
@@ -88,10 +89,11 @@ export async function acceptFormation(
     
   } catch (error) {
     console.error('[GAME-ENGINE] ❌ Error accepting formation:', error);
+    const err = error as Error;
     
     return {
       success: false,
-      error: error.message
+      error: err.message
     };
   }
 }
@@ -266,13 +268,18 @@ function getPositionY(position: string): number {
 export async function getMatchFormation(matchId: string): Promise<FormationPlayer[] | null> {
   try {
     const match = await matches.get(matchId);
-    if (!match || !match.lineup) {
+    if (!match) {
+      return null;
+    }
+    
+    const current = match as any;
+    if (!current.lineup) {
       return null;
     }
     
     const formation: FormationPlayer[] = [
-      ...match.lineup.map((p: any) => ({ ...p, is_starter: true })),
-      ...(match.substitutes || []).map((p: any) => ({ ...p, is_starter: false }))
+      ...current.lineup.map((p: any) => ({ ...p, is_starter: true })),
+      ...(current.substitutes || []).map((p: any) => ({ ...p, is_starter: false }))
     ];
     
     return formation;

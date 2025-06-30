@@ -6,6 +6,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "noEmitOnError": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false
   },

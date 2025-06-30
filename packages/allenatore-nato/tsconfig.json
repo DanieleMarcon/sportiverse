@@ -8,7 +8,8 @@
     "skipLibCheck": true,
     "noEmitOnError": false,
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false
   },
   "include": [
     "src/**/*"

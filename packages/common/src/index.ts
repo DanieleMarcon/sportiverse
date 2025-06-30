@@ -17,3 +17,14 @@ export const API_ENDPOINTS = {
 export * from './models';
 export * from './types/GameTypes';
 export * from './types/PlayerTypes';
+
+// Export types from models to avoid duplicate exports
+export type { 
+  Player, 
+  Team, 
+  Match, 
+  Tactics,
+  PlayerAttributes,
+  PlayerStatistics,
+  TeamStatistics
+} from './models';

@@ -62,7 +62,7 @@ export default async function formationHandler(req: Request): Promise<Response> 
     }
     
     // Validazione formazione (11 titolari)
-    const starters = lineupPlayers.filter(p => p.is_starter);
+    const starters = lineupPlayers.filter(p => (p as any).is_starter);
     if (starters.length !== 11) {
       return new Response(JSON.stringify({
         success: false,
@@ -75,10 +75,10 @@ export default async function formationHandler(req: Request): Promise<Response> 
     
     // Trasforma dati per Game Engine
     const formationData = lineupPlayers.map(player => ({
-      athlete_id: player.athlete_id,
-      position: player.position,
-      is_starter: player.is_starter,
-      shirt_number: player.shirt_number || null
+      athlete_id: (player as any).athlete_id,
+      position: (player as any).position,
+      is_starter: (player as any).is_starter,
+      shirt_number: (player as any).shirt_number || null
     }));
     
     // Chiama Game Engine per accettare formazione
@@ -126,7 +126,7 @@ export default async function formationHandler(req: Request): Promise<Response> 
     return new Response(JSON.stringify({
       success: false,
       error: 'INTERNAL_ERROR: errore interno del server',
-      details: error.message
+      details: (error as Error).message
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

@@ -72,12 +72,12 @@ export async function sendMail(to: string, options: EmailOptions): Promise<Email
     console.error('[EMAIL] ❌ Failed to send email:', {
       to,
       subject: options.subject,
-      error: error.message
+      error: (error as Error).message
     });
     
     return {
       success: false,
-      error: error.message
+      error: (error as Error).message
     };
   }
 }
@@ -130,7 +130,7 @@ export async function sendPushNotification(userId: string, title: string, body: 
   } catch (error) {
     return {
       success: false,
-      error: error.message
+      error: (error as Error).message
     };
   }
 }
@@ -151,7 +151,7 @@ export async function sendSMS(phoneNumber: string, message: string): Promise<Ema
   } catch (error) {
     return {
       success: false,
-      error: error.message
+      error: (error as Error).message
     };
   }
 }

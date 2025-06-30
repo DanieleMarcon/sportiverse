@@ -132,7 +132,7 @@
 | **Performance** | < 2s load | ~3s | 🟡 |
 | **Accessibilità** | WCAG AA | Parziale | 🟡 |
 | **Mobile Ready** | 100% | 80% | 🟡 |
-| **Funzionalità Core** | 100% | 90% | 🟢 |
+| **Funzionalità Core** | 100% | 95% | 🟢 |
 | **Sistema Notifiche** | 100% | 100% | 🟢 |
 
 ---
@@ -164,6 +164,44 @@
 
 ---
 
+## 📝 Sistema Note Tecniche Implementato
+
+### Funzionalità Complete
+- ✅ **Dataset `athlete_notes`**: Schema completo con relazioni
+- ✅ **Flow `Athlete_AddNote`**: Validazioni ACL e business rules
+- ✅ **UI Avanzata**: Form con categorie, priorità e visibilità
+- ✅ **Controlli Granulari**: Solo allenatori possono aggiungere note
+- ✅ **Sistema Tag**: Categorizzazione (tattica, fisica, mentale, disciplinare, comportamento, sviluppo)
+- ✅ **Priorità**: Bassa, Media, Alta con colori semantici
+- ✅ **Visibilità**: Privata, Team, Staff con controlli accesso
+
+### Caratteristiche Tecniche
+- **Validazione**: Max 2000 caratteri per nota
+- **ACL**: Solo ALLENATORE può aggiungere note ai propri atleti
+- **Audit**: Log completo di tutte le operazioni
+- **Performance**: Indici ottimizzati per query frequenti
+- **UI/UX**: Form intuitivo con feedback real-time
+
+---
+
+## 📄 Sistema Documenti Implementato
+
+### Funzionalità Complete
+- ✅ **Upload Documenti**: UploadDropzone con drag&drop
+- ✅ **Validazioni**: Formato (PDF, PNG, JPG), dimensione (max 10MB)
+- ✅ **Tipi Supportati**: Cartellino, Visita Medica, Nulla Osta, Certificato Medico, Assicurazione
+- ✅ **Badge Scadenze**: Indicatori automatici "⚠️ Scaduto" per documenti expired
+- ✅ **Storage**: Integrazione Bolt Storage con URL sicuri
+- ✅ **ACL**: Solo DIRIGENTE può caricare documenti
+
+### Caratteristiche Tecniche
+- **Sicurezza**: Validazione lato server e client
+- **Performance**: Upload asincrono con progress indicator
+- **Audit**: Log completo upload e accessi
+- **UI/UX**: Lista documenti con icone semantiche e stati visivi
+
+---
+
 *Ultimo aggiornamento: Giugno 2025*  
-*Versione CRM: 1.5*  
-*Sprint completati: A-3, B, C ✔, D, E*
+*Versione CRM: 1.6*  
+*Sprint completati: A-3, B, C, D ✔, E*

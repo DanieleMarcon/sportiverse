@@ -41,6 +41,7 @@ export default async function Athlete_AddNote(input, context) {
       note_text: input.note_text.trim(),
       visibility: input.visibility || 'team', // team, staff, private
       tags: input.tags || [], // tattica, fisica, mentale, disciplinare
+      priority: input.priority || 'medium',
       created_at: new Date(),
       updated_at: new Date()
     });

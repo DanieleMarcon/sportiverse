@@ -4,7 +4,6 @@ import Tabs, { useTabState } from '@ui/components/Tabs';
 import DocumentList from '@ui/components/DocumentList';
 import UploadDropzone from '@ui/components/UploadDropzone';
 import FeeStatusBadge from '@ui/components/FeeStatusBadge';
-import AthleteCard from '@ui/components/AthleteCard';
 
 interface Athlete {
   id: string;
@@ -44,6 +43,7 @@ interface Note {
   coach_name: string;
   visibility: string;
   tags: string[];
+  priority: string;
 }
 
 interface CalendarEvent {
@@ -67,12 +67,29 @@ export default function AthleteDetail() {
   const [newNote, setNewNote] = useState('');
   const [noteVisibility, setNoteVisibility] = useState('team');
   const [noteTags, setNoteTags] = useState<string[]>([]);
+  const [notePriority, setNotePriority] = useState('medium');
+  const [isAddingNote, setIsAddingNote] = useState(false);
+
+  const isExpired = (dateString?: string): boolean => {
+    if (!dateString) return false;
+    return new Date(dateString) < new Date();
+  };
 
   const tabs = [
     { id: 'profile', label: 'Profilo', icon: '👤' },
-    { id: 'documents', label: 'Documenti', icon: '📄', badge: documents.filter(d => isExpired(d.expires_at)).length },
+    { 
+      id: 'documents', 
+      label: 'Documenti', 
+      icon: '📄', 
+      badge: documents.filter(d => isExpired(d.expires_at)).length 
+    },
     { id: 'notes', label: 'Note Tecniche', icon: '📝', badge: notes.length },
-    { id: 'notifications', label: 'Notifiche', icon: '🔔', badge: events.filter(e => e.status === 'pending').length }
+    { 
+      id: 'notifications', 
+      label: 'Notifiche', 
+      icon: '🔔', 
+      badge: events.filter(e => e.status === 'pending').length 
+    }
   ];
 
   const { activeTab, setActiveTab, isActive } = useTabState(tabs, 'profile');
@@ -111,7 +128,7 @@ export default function AthleteDetail() {
         market_value: 150000
       });
 
-      // Mock documents
+      // Mock documents with expired ones
       setDocuments([
         {
           id: 'doc-1',
@@ -127,8 +144,17 @@ export default function AthleteDetail() {
           type: 'visita_medica',
           file_name: 'visita_medica_2024.pdf',
           file_url: 'https://example.com/doc2.pdf',
-          expires_at: '2024-06-30', // Expired
+          expires_at: '2024-01-30', // Expired
           created_at: '2023-06-15',
+          uploaded_by: 'admin'
+        },
+        {
+          id: 'doc-3',
+          type: 'certificato_medico',
+          file_name: 'certificato_medico.pdf',
+          file_url: 'https://example.com/doc3.pdf',
+          expires_at: '2024-02-15', // Expired
+          created_at: '2023-08-10',
           uploaded_by: 'admin'
         }
       ]);
@@ -137,12 +163,23 @@ export default function AthleteDetail() {
       setNotes([
         {
           id: 'note-1',
-          note_text: 'Ottima prestazione in allenamento. Migliorato il tiro da fuori area.',
+          note_text: 'Ottima prestazione in allenamento. Migliorato il tiro da fuori area. Continua a lavorare sulla precisione nei passaggi lunghi.',
           created_at: '2024-01-10',
           coach_id: 'coach-1',
           coach_name: 'Mister Bianchi',
           visibility: 'team',
-          tags: ['tattica', 'fisica']
+          tags: ['tattica', 'fisica'],
+          priority: 'high'
+        },
+        {
+          id: 'note-2',
+          note_text: 'Buona condizione fisica generale. Necessario migliorare la resistenza per i 90 minuti.',
+          created_at: '2024-01-05',
+          coach_id: 'coach-1',
+          coach_name: 'Preparatore Verdi',
+          visibility: 'staff',
+          tags: ['fisica'],
+          priority: 'medium'
         }
       ]);
 
@@ -152,7 +189,14 @@ export default function AthleteDetail() {
           id: 'event-1',
           type_enum: 'visita_medica',
           due_at: '2024-06-15',
-          description: 'Visita medica di controllo',
+          description: 'Visita medica di controllo annuale',
+          status: 'pending'
+        },
+        {
+          id: 'event-2',
+          type_enum: 'compleanno',
+          due_at: '2024-03-15',
+          description: 'Compleanno di Marco Rossi',
           status: 'pending'
         }
       ]);
@@ -163,11 +207,6 @@ export default function AthleteDetail() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const isExpired = (dateString?: string): boolean => {
-    if (!dateString) return false;
-    return new Date(dateString) < new Date();
   };
 
   const handleDocumentUpload = async (file: File) => {
@@ -190,9 +229,16 @@ export default function AthleteDetail() {
   const handleAddNote = async () => {
     if (!newNote.trim()) return;
     
+    setIsAddingNote(true);
     try {
       // TODO: Call Athlete_AddNote flow
-      console.log('Adding note:', newNote);
+      console.log('Adding note:', {
+        athlete_id: id,
+        note_text: newNote,
+        visibility: noteVisibility,
+        tags: noteTags,
+        priority: notePriority
+      });
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -200,12 +246,15 @@ export default function AthleteDetail() {
       // Reset form
       setNewNote('');
       setNoteTags([]);
+      setNotePriority('medium');
       
       // Refresh notes
       await loadAthleteData();
       
     } catch (error) {
       console.error('Add note error:', error);
+    } finally {
+      setIsAddingNote(false);
     }
   };
 
@@ -215,6 +264,15 @@ export default function AthleteDetail() {
         ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'low': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+    }
   };
 
   if (loading) {
@@ -254,7 +312,7 @@ export default function AthleteDetail() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <FeeStatusBadge status="paid" />
+          <FeeStatusBadge />
           <div className={`px-3 py-1 rounded-full text-sm font-medium ${
             athlete.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
             athlete.status === 'injured' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
@@ -341,7 +399,14 @@ export default function AthleteDetail() {
 
               {/* Documents List */}
               <div>
-                <h3 className="text-lg font-semibold mb-4">Documenti Esistenti</h3>
+                <h3 className="text-lg font-semibold mb-4">
+                  Documenti Esistenti
+                  {documents.filter(d => isExpired(d.expires_at)).length > 0 && (
+                    <span className="ml-2 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400 text-sm rounded-full">
+                      {documents.filter(d => isExpired(d.expires_at)).length} scaduti
+                    </span>
+                  )}
+                </h3>
                 <DocumentList 
                   documents={documents}
                   onDocumentClick={(doc) => window.open(doc.file_url, '_blank')}
@@ -371,7 +436,7 @@ export default function AthleteDetail() {
                 <div>
                   <label className="block text-sm font-medium mb-2">Categorie:</label>
                   <div className="flex flex-wrap gap-2">
-                    {['tattica', 'fisica', 'mentale', 'disciplinare'].map(tag => (
+                    {['tattica', 'fisica', 'mentale', 'disciplinare', 'comportamento', 'sviluppo'].map(tag => (
                       <button
                         key={tag}
                         onClick={() => toggleNoteTag(tag)}
@@ -387,18 +452,33 @@ export default function AthleteDetail() {
                   </div>
                 </div>
 
-                {/* Visibility */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Visibilità:</label>
-                  <select
-                    value={noteVisibility}
-                    onChange={(e) => setNoteVisibility(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
-                  >
-                    <option value="private">Solo io</option>
-                    <option value="team">Team tecnico</option>
-                    <option value="staff">Tutto lo staff</option>
-                  </select>
+                {/* Priority and Visibility */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Priorità:</label>
+                    <select
+                      value={notePriority}
+                      onChange={(e) => setNotePriority(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                    >
+                      <option value="low">Bassa</option>
+                      <option value="medium">Media</option>
+                      <option value="high">Alta</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Visibilità:</label>
+                    <select
+                      value={noteVisibility}
+                      onChange={(e) => setNoteVisibility(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                    >
+                      <option value="private">Solo io</option>
+                      <option value="team">Team tecnico</option>
+                      <option value="staff">Tutto lo staff</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -407,10 +487,13 @@ export default function AthleteDetail() {
                   </span>
                   <button
                     onClick={handleAddNote}
-                    disabled={!newNote.trim()}
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={!newNote.trim() || isAddingNote}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
-                    Aggiungi Nota
+                    {isAddingNote && (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    )}
+                    {isAddingNote ? 'Aggiungendo...' : 'Aggiungi Nota'}
                   </button>
                 </div>
               </div>
@@ -418,7 +501,7 @@ export default function AthleteDetail() {
 
             {/* Notes List */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Note Esistenti</h3>
+              <h3 className="text-lg font-semibold">Note Esistenti ({notes.length})</h3>
               {notes.length > 0 ? (
                 notes.map(note => (
                   <div key={note.id} className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
@@ -427,6 +510,9 @@ export default function AthleteDetail() {
                         <span className="font-medium">{note.coach_name}</span>
                         <span className="text-sm text-gray-500">
                           {new Date(note.created_at).toLocaleDateString('it-IT')}
+                        </span>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(note.priority)}`}>
+                          {note.priority === 'high' ? 'Alta' : note.priority === 'medium' ? 'Media' : 'Bassa'}
                         </span>
                       </div>
                       <div className="flex gap-1">
@@ -437,7 +523,10 @@ export default function AthleteDetail() {
                         ))}
                       </div>
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300">{note.note_text}</p>
+                    <p className="text-gray-700 dark:text-gray-300 mb-2">{note.note_text}</p>
+                    <div className="flex justify-between items-center text-xs text-gray-500">
+                      <span>Visibilità: {note.visibility === 'private' ? 'Privata' : note.visibility === 'team' ? 'Team' : 'Staff'}</span>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -450,7 +539,7 @@ export default function AthleteDetail() {
         {/* Notifications Tab */}
         {isActive('notifications') && (
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold">Eventi e Notifiche</h3>
+            <h3 className="text-lg font-semibold">Eventi e Notifiche ({events.length})</h3>
             {events.length > 0 ? (
               <div className="space-y-4">
                 {events.map(event => (

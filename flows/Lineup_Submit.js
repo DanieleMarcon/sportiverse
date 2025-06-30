@@ -1,7 +1,6 @@
 import { checkPermission } from '@/services/auth/checkPermission';
 import { ACL } from '@/services/auth/acl';
 import { lineups, lineup_players, matches, athletes } from 'bolt:data';
-import axios from 'axios';
 
 export default async function Lineup_Submit(input, context) {
   // Controllo ACL - Solo ALLENATORE per propria squadra
@@ -54,29 +53,33 @@ export default async function Lineup_Submit(input, context) {
     let syncError = null;
     
     try {
-      const apiResponse = await axios.post('/services/game-api/formation', {
-        match_id: input.match_id,
-        lineup_id: lineupId
-      }, {
-        timeout: 10000, // 10 secondi timeout
+      // Chiamata API interna per sincronizzazione
+      const apiResponse = await fetch('/services/game-api/formation', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${context.token}`
-        }
+        },
+        body: JSON.stringify({
+          match_id: input.match_id,
+          lineup_id: lineupId
+        })
       });
       
-      if (apiResponse.data.success) {
+      const responseData = await apiResponse.json();
+      
+      if (responseData.success) {
         syncSuccess = true;
-        console.log(`[LINEUP] ✅ Sync successful: ${apiResponse.data.data.game_engine_id}`);
+        console.log(`[LINEUP] ✅ Sync successful: ${responseData.data.game_engine_id}`);
         
         // Aggiorna stato sincronizzazione
         await lineups.update(lineupId, {
           sync_status: 'completed',
           synced_at: new Date(),
-          game_engine_id: apiResponse.data.data.game_engine_id
+          game_engine_id: responseData.data.game_engine_id
         });
       } else {
-        throw new Error(apiResponse.data.error || 'Game Engine sync failed');
+        throw new Error(responseData.error || 'Game Engine sync failed');
       }
       
     } catch (syncErr) {

@@ -680,8 +680,9 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 2. Validazione completa (11 titolari + max 7 riserve)
 3. Controllo disponibilità giocatori (sani e tesserati)
 4. Salvataggio CRM (dataset lineups e lineup_players)
-5. Sync API - POST a Game Engine con retry su errore
-6. Logging audit - Tracciamento completo operazioni
+5. **Sync API - POST a `/services/game-api/formation` con retry su errore**
+6. **Aggiornamento stato sincronizzazione (completed/failed)**
+7. Logging audit - Tracciamento completo operazioni
 
 **Dataset coinvolti**:
 
@@ -721,7 +722,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 | Notification\_SendDaily       | Calendario, Notifiche | Cron job giornaliero                 | `events_calendar`, `log_notifications`, `users`                                           | Notifiche inviate, log completo        | SYSTEM        |
 | Document\_Upload              | CRM Atleti            | Upload documento atleta              | `documents`, `athletes`                                                                   | Documento caricato con successo        | DIRIGENTE     |
 | Athlete\_AddNote              | CRM Atleti            | Aggiunta nota tecnica                | `athlete_notes`, `athletes`                                                               | Nota tecnica aggiunta                  | ALLENATORE    |
-| Lineup\_Submit                | CRM Formazioni        | Invio formazione partita             | `lineups`, `lineup_players`, `matches`                                                   | Formazione sincronizzata con Game      | ALLENATORE    |
+| **Lineup\_Submit**            | **CRM Formazioni**    | **Invio formazione partita**         | **`lineups`, `lineup_players`, `matches`**                                               | **Formazione sincronizzata con Game**  | **ALLENATORE** |
 
 ---
 
@@ -747,7 +748,7 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 
 * `Document_Upload` → gestisce upload documenti atleti con validazioni complete
 * `Athlete_AddNote` → sistema note tecniche per allenatori
-* `Lineup_Submit` → sincronizzazione formazioni CRM ↔ Game Engine
+* **`Lineup_Submit` → sincronizzazione formazioni CRM ↔ Game Engine con API interna**
 
 ### Flow Notifiche
 
@@ -771,11 +772,11 @@ Questa documentazione descrive tutti i Flow logici necessari per il funzionament
 3. **Fase 3**: `Player_Train`, `Tactics_Update`, `Morale_Update`, `Finance_Update`, `UserSettings_Apply`
 4. **Fase 4**: `Transfer_Offer`, `Transfer_Process`, `Board_Evaluate`, `Scouting_Discover`, `Staff_AssignRole`
 5. **Fase 5**: `Discovery_Complete`, `Press_Center_Display`, `Calendar_FetchUpcomingEvents`, `Report_CompileHistory`
-6. **Fase 6**: `Document_Upload`, `Athlete_AddNote`, `Lineup_Submit` (CRM Integration)
+6. **Fase 6**: `Document_Upload`, `Athlete_AddNote`, **`Lineup_Submit`** (CRM Integration)
 7. **Fase 7**: `Notification_SendDaily` (Sistema Notifiche Automatiche)
 
 ---
 
 *Documentazione aggiornata al: Giugno 2025*
-*Versione flow: 1.3*
+*Versione flow: 1.4*
 *Compatibilità Bolt.new: Tutte le versioni*

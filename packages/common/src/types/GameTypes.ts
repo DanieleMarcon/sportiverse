@@ -181,6 +181,45 @@ export interface Tactics {
   updatedAt: Date;
 }
 
+// Transfer types
+export interface Transfer {
+  id: string;
+  playerId: string;
+  fromTeamId: string;
+  toTeamId: string;
+  amount: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TransferOffer {
+  amount: number;
+  salary: number;
+  duration: number;
+  deadline: Date;
+}
+
+export interface NegotiationResult {
+  accepted: boolean;
+  counterOffer?: TransferOffer;
+  reason: string;
+  negotiationId: string;
+}
+
+// Training types
+export interface Training {
+  id: string;
+  teamId: string;
+  type: string;
+  intensity: number;
+  duration: number;
+  participants: string[];
+  completed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Placeholder types per evitare import rotti
 export interface GameState {
   currentDate: Date;

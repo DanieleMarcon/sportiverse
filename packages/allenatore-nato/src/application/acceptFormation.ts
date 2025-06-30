@@ -56,7 +56,7 @@ export async function acceptFormation(
     const formationId = `formation_${matchId}_${Date.now()}`;
     
     // Aggiorna match con formazione
-    const payload = { ...match } as any;
+    const payload = { ...(match as any) };
     const updatedMatch = {
       ...payload,
       lineup: starters.map(p => ({
@@ -272,7 +272,7 @@ export async function getMatchFormation(matchId: string): Promise<FormationPlaye
       return null;
     }
     
-    const current = match as any;
+    const current = match as any; // TODO refine
     if (!current.lineup) {
       return null;
     }

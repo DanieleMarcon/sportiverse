@@ -1,8 +1,8 @@
 // ⚽ Transfer Engine - Sistema mercato e trasferimenti
 // Implementa la logica del mercato seguendo i Flow documentati
 
-import type { Transfer, TransferOffer, NegotiationResult } from '../types/GameTypes'
-import type { Player, Team } from '../types/GameTypes'
+import type { Transfer, TransferOffer, NegotiationResult } from '@common/types/GameTypes'
+import type { Player, Team } from '@common/types/GameTypes'
 
 export class TransferEngine {
   /**

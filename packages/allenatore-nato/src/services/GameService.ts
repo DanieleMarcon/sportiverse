@@ -6,7 +6,7 @@ import { TacticsEngine } from '../engine/TacticsEngine'
 import { TrainingEngine } from '../engine/TrainingEngine'
 import { TransferEngine } from '../engine/TransferEngine'
 
-import type { Team, Player, Match, Tactics, Training } from '../types/GameTypes'
+import type { Team, Player, Match, Tactics, Training } from '@common/types/GameTypes'
 
 export class GameService {
   /**

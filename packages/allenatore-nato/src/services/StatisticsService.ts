@@ -1,8 +1,8 @@
 // ⚽ Statistics Service - Servizio per calcoli statistici avanzati
 // Gestisce tutte le statistiche e metriche del gioco
 
-import type { Player, Team, Match } from '../types/GameTypes'
-import type { PlayerStatistics, TeamStatistics } from '../types/PlayerTypes'
+import type { Player, Team, Match } from '@common/types/GameTypes'
+import type { PlayerStatistics, TeamStatistics } from '@common/types/PlayerTypes'
 
 export class StatisticsService {
   /**
@@ -157,21 +157,6 @@ export class StatisticsService {
 // === TYPES ===
 
 export type TimePeriod = 'match' | 'week' | 'month' | 'season' | 'career'
-
-export interface TeamStatistics {
-  position: number
-  points: number
-  played: number
-  wins: number
-  draws: number
-  losses: number
-  goalsFor: number
-  goalsAgainst: number
-  goalDifference: number
-  form: string[] // W, D, L for last 5 games
-  averageRating: number
-  cleanSheets: number
-}
 
 export interface LeagueStanding {
   position: number
